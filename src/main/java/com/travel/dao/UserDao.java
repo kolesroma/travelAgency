@@ -1,5 +1,7 @@
 package com.travel.dao;
 
+import com.travel.dao.entity.User;
+
 import java.util.List;
 
 public interface UserDao {

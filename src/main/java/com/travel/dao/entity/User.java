@@ -1,4 +1,4 @@
-package com.travel.dao;
+package com.travel.dao.entity;
 
 import java.util.Objects;
 
