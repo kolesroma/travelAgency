@@ -52,6 +52,34 @@ public class UserDaoFactory implements UserDao {
     }
 
     @Override
+    public User getByLogin(String login) throws DaoException {
+        final String SQL = "select * from travelAgency.users where login = ?";
+        User user;
+
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setString(1, login);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) throw new DaoException("there is no user with login " + login);
+                user = new User(rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("passwordEnc"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getInt("age"),
+                        rs.getString("address"),
+                        rs.getString("role"),
+                        rs.getBoolean("isBanned"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DaoException("cannot get user", e);
+        }
+
+        return user;
+    }
+
+    @Override
     public List<User> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.users";
         List<User> users = new ArrayList<>();
