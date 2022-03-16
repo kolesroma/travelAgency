@@ -10,6 +10,6 @@
     <input type="password" name="password"><br>
     <input type="submit" value="LOG IN">
 </form>
-
+<a href="register.jsp">register</a>
 </body>
 </html>

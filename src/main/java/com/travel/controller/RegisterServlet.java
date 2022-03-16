@@ -1,5 +1,7 @@
 package com.travel.controller;
 
+import com.travel.dao.UserDao;
+import com.travel.dao.UserDaoFactory;
 import com.travel.dao.entity.User;
 import com.travel.model.AuthorizationException;
 import com.travel.model.UserManager;
@@ -11,23 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        String name = req.getParameter("name");
+        String surname = req.getParameter("surname");
+        String ageSt = req.getParameter("age");
+        String address = req.getParameter("address");
 
-        User user;
         try {
-            user = new UserManager().login(login, password);
+            new UserManager().register(login, password, name, surname, ageSt, address);
         } catch (AuthorizationException e) {
             e.printStackTrace();
-            // send redirect
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             return;
         }
-        req.getSession().setAttribute("loggedUser", user);
-        resp.sendRedirect("home.html");
+        resp.sendRedirect("index.jsp");
     }
 }

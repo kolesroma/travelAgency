@@ -20,7 +20,7 @@ public class SessionFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         String path = req.getRequestURI().substring(req.getContextPath().length());
-        if (!("/index.jsp".equals(path) || "/".equals(path))) {
+        if (!("/index.jsp".equals(path) || "/register.jsp".equals(path) || "/".equals(path))) {
             User user = (User) req.getSession().getAttribute("loggedUser");
             if (user == null) resp.sendRedirect("index.jsp");
         }
