@@ -28,6 +28,6 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         req.getSession().setAttribute("loggedUser", user);
-        resp.sendRedirect("home.html");
+        resp.sendRedirect("home.jsp");
     }
 }

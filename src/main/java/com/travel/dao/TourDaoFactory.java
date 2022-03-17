@@ -73,6 +73,32 @@ public class TourDaoFactory implements TourDao {
     }
 
     @Override
+    public List<Tour> getPiece(int skip, int show) throws DaoException {
+        final String SQL = "select * from travelAgency.tours limit ?, ?";
+        List<Tour> tours = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, skip);
+            ps.setInt(2, show);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    tours.add(new Tour(rs.getInt("id"),
+                            rs.getInt("price"),
+                            rs.getBoolean("isHot"),
+                            rs.getInt("groupSize"),
+                            rs.getString("type"),
+                            rs.getInt("hotelStars")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DaoException("cannot get tours", e);
+        }
+        return tours;
+    }
+
+    @Override
     public void add(Tour tour) throws DaoException {
         final String SQL = "insert into travelAgency.tours values (default, ?, ?, ?, ?, ?)";
 
@@ -87,6 +113,21 @@ public class TourDaoFactory implements TourDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DaoException("cannot add tour", e);
+        }
+    }
+
+    @Override
+    public int countRows() throws DaoException {
+        final String SQL = "select count(*) from travelAgency.tours";
+
+        try (Connection con = DriverManager.getConnection(URL);
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(SQL)) {
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DaoException("cannot count rows", e);
         }
     }
 
