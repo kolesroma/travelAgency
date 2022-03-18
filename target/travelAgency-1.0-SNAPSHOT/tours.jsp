@@ -31,19 +31,37 @@ tours <br>
 </form>
 <div class="tour-container">
     <c:forEach var="tour" items="${requestScope.tours}">
-        <div class="tour">
-            <img src="img/hotel.jpg" alt="hotel">
-            <p>first</p>
-            <p>hot: ${tour.hot}</p>
-            <p>price: ${tour.price}</p>
-            <p>type: ${tour.type}</p>
-            <p>size group: ${tour.groupSize}</p>
-            <p>hotel: ${tour.hotelStars}*</p>
-        </div>
+        <a href="ShowTourServlet?id=${tour.id}">
+            <div class="tour">
+                <img src="img/hotel.jpg" alt="hotel">
+                <p>first</p>
+                <p>hot: ${tour.hot}</p>
+                <p>price: ${tour.price}</p>
+                <p>type: ${tour.type}</p>
+                <p>size group: ${tour.groupSize}</p>
+                <p>hotel: ${tour.hotelStars}*</p>
+            </div>
+        </a>
     </c:forEach>
 </div>
-<a href="ShowToursServlet?page=${requestScope.page-1}">previous</a> ~~
-<a href="ShowToursServlet?page=${requestScope.page+1}">next</a>
+<a id="prev" class="prev" href="ShowToursServlet?page=${requestScope.page-1}">previous</a> ~~
+<a id="next" href="ShowToursServlet?page=${requestScope.page+1}">next</a>
 page: ${requestScope.page}
 </body>
+
+<script>
+    function get(name) {
+        if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+    }
+    let name = get("page");
+    if (name <= "1") {
+        const prev = document.getElementById("prev");
+        prev.removeAttribute("href");
+    }
+    else if (name >= "20") {
+        const next = document.getElementById("next");
+        next.removeAttribute("href");
+    }
+</script>
 </html>

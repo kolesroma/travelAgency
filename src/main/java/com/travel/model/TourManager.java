@@ -51,6 +51,21 @@ public class TourManager {
     }
 
     /**
+     * @param idSt String parsing to int
+     * @return parsed int or -1 if exception
+     */
+    public int parseId(String idSt) {
+        int id;
+        try {
+            id = Integer.parseInt(idSt);
+        } catch (NumberFormatException e) {
+            // send error
+            id = -1;
+        }
+        return id;
+    }
+
+    /**
      * @return max possible page. if error returns 1
      */
     public int getMaxPage() {
@@ -63,5 +78,20 @@ public class TourManager {
             maxPage = 1; // should never happen
         }
         return maxPage;
+    }
+
+    /**
+     * @return Tour with id as a parameter or null if Tour not found
+     */
+    public Tour getTourById(int id) {
+        TourDao tourDao = TourDaoFactory.getInstance();
+        Tour tour;
+        try {
+            tour = tourDao.getById(id);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return tour;
     }
 }
