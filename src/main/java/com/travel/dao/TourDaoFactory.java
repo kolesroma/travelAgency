@@ -9,6 +9,7 @@ import java.util.List;
 public class TourDaoFactory implements TourDao {
     static final String URL = "jdbc:mysql://localhost:3306?" +
             "autoReconnect=true&" +
+            "allowPublicKeyRetrieval=true&" +
             "useSSL=false&" +
             "user=root&" +
             "password=password";

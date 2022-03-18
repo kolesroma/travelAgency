@@ -11,7 +11,8 @@ sweet home <br>
 <form action="LogoutServlet" method="post">
     <input type="submit" value="LOG OUT">
 </form>
-<form action="ShowToursServlet?page=1" method="get">
+<form action="ShowToursServlet" method="get">
+    <input type="hidden" name="page" value="1">
     <input type="submit" value="GO TO TOURS">
 </form>
 

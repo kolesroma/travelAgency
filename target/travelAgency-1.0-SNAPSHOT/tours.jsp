@@ -44,5 +44,6 @@ tours <br>
 </div>
 <a href="ShowToursServlet?page=${requestScope.page-1}">previous</a> ~~
 <a href="ShowToursServlet?page=${requestScope.page+1}">next</a>
+page: ${requestScope.page}
 </body>
 </html>

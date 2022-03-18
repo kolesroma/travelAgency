@@ -8,7 +8,8 @@ import java.util.List;
 
 public class UserDaoFactory implements UserDao {
     static final String URL = "jdbc:mysql://localhost:3306?" +
-//            "autoReconnect=true&" +
+            "autoReconnect=true&" +
+            "allowPublicKeyRetrieval=true&" +
             "useSSL=false&" +
             "user=root&" +
             "password=password";
