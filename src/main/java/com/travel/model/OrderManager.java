@@ -4,27 +4,10 @@ import com.travel.dao.*;
 import com.travel.dao.entity.Order;
 import com.travel.dao.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderManager {
-    public User login(String login, String password) throws AuthorizationException {
-        UserDao userDao = UserDaoFactory.getInstance();
-        User user;
-        try {
-            user = userDao.getByLogin(login);
-        } catch (DaoException e) {
-            e.printStackTrace();
-            throw new AuthorizationException("wrong login or/and password", e);
-        }
-        if (!user.getPasswordEnc().equals(password)) {
-            throw new AuthorizationException("wrong login or/and password");
-        }
-        return user;
-    }
-
-
-    public Order getById(int tourId) {
-        return null;
-    }
-
     public boolean registerOrder(int userId, int tourId) {
         OrderDao orderDao = OrderDaoFactory.getInstance();
         try {
@@ -34,5 +17,37 @@ public class OrderManager {
             return false;
         }
         return true;
+    }
+
+    /**
+     * says whether the order exists
+     * @param userId of this order
+     * @param tourId of this order
+     * @return true if exists; false if not exists or exception
+     */
+    public boolean isExist(int userId, int tourId) {
+        OrderDao orderDao = OrderDaoFactory.getInstance();
+        Order order;
+        try {
+            order = orderDao.getByUserIdTourId(userId, tourId);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return order != null;
+    }
+
+    /**
+     * @return List of user orders; could be an empty List
+     */
+    public List<Order> getOrdersByUserId(int userId) {
+        OrderDao orderDao = OrderDaoFactory.getInstance();
+        List<Order> orders = new ArrayList<>();
+        try {
+            orders = orderDao.getUserOrders(userId);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return orders;
     }
 }

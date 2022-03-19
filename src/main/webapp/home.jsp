@@ -6,7 +6,7 @@
     <title>tours</title>
 </head>
 <body>
-sweet home <br>
+sweet home <a href="ShowMyOrders">my orders</a> <br>
 <a href="myInfo.jsp">my info</a>
 <form action="LogoutServlet" method="post">
     <input type="submit" value="LOG OUT">

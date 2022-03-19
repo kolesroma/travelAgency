@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDaoFactory implements OrderDao{
+public class OrderDaoFactory implements OrderDao {
     static final String URL = "jdbc:mysql://localhost:3306?" +
             "autoReconnect=true&" +
             "allowPublicKeyRetrieval=true&" +
@@ -16,7 +16,8 @@ public class OrderDaoFactory implements OrderDao{
 
     private static OrderDao instance;
 
-    private OrderDaoFactory() {}
+    private OrderDaoFactory() {
+    }
 
     public static synchronized OrderDao getInstance() {
         if (instance == null) instance = new OrderDaoFactory();
@@ -48,6 +49,29 @@ public class OrderDaoFactory implements OrderDao{
     }
 
     @Override
+    public Order getByUserIdTourId(int userId, int tourId) throws DaoException {
+        final String SQL = "select * from travelAgency.orders where userId = ? and tourId = ?";
+        Order order;
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, tourId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+                order = new Order(rs.getInt("id"),
+                        rs.getInt("userId"),
+                        rs.getInt("tourId"),
+                        rs.getString("status"),
+                        rs.getInt("discount"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DaoException("cannot get order", e);
+        }
+        return order;
+    }
+
+    @Override
     public List<Order> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.orders";
         List<Order> orders = new ArrayList<>();
@@ -67,6 +91,30 @@ public class OrderDaoFactory implements OrderDao{
             throw new DaoException("cannot get order", e);
         }
 
+        return orders;
+    }
+
+    @Override
+    public List<Order> getUserOrders(int userId) throws DaoException {
+        final String SQL = "select * from travelAgency.orders where userId = ?";
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(new Order(rs.getInt("id"),
+                            rs.getInt("userId"),
+                            rs.getInt("tourId"),
+                            rs.getString("status"),
+                            rs.getInt("discount")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DaoException("cannot get orders", e);
+        }
         return orders;
     }
 

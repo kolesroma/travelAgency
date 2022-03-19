@@ -1,5 +1,6 @@
 package com.travel.controller;
 
+import com.travel.dao.entity.Order;
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
 import com.travel.model.OrderManager;
@@ -11,26 +12,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("/ShowTourServlet")
-public class ShowTourServlet extends HttpServlet {
+@WebServlet("/ShowMyOrders")
+public class ShowMyOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String tourIdSt = req.getParameter("id");
-        int tourId = new TourManager().parseId(tourIdSt);
-        Tour tour = new TourManager().getTourById(tourId);
-
-        if (tour == null) {
-            resp.sendError(400, "this tour is not exist");
-            return;
-        }
-
         int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
-        boolean madeOrder = new OrderManager().isExist(userId, tourId);
+        List<Order> orders = new OrderManager().getOrdersByUserId(userId);
 
-        req.setAttribute("madeOrder", madeOrder);
-        req.setAttribute("tour", tour);
-        req.getRequestDispatcher("tour.jsp")
+        req.setAttribute("orders", orders);
+        req.getRequestDispatcher("myOrders.jsp")
                 .forward(req, resp);
     }
 }

@@ -10,7 +10,6 @@
     <title>home</title>
 </head>
 <body>
-tour <br>
 <div class="tour">
     <img src="img/hotel.jpg" alt="hotel">
     <p>TOUR</p>
@@ -19,8 +18,12 @@ tour <br>
     <p>type: ${requestScope.tour.type}</p>
     <p>size group: ${requestScope.tour.groupSize}</p>
     <p>hotel: ${requestScope.tour.hotelStars}*</p>
-    <a href="RegisterOrderServlet?tourId=${requestScope.tour.id}">__ order this tour __</a>
-    reg state: ${requestScope.}
+    <c:if test="${!requestScope.madeOrder}">
+        <a href="RegisterOrderServlet?tourId=${requestScope.tour.id}">__ order this tour __</a>
+    </c:if>
+    <c:if test="${requestScope.madeOrder}">
+        You made order for this tour ✔
+    </c:if>
 </div>
 </body>
 </html>
