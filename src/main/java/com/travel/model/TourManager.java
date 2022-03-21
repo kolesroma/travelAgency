@@ -5,6 +5,7 @@ import com.travel.dao.TourDao;
 import com.travel.dao.TourDaoFactory;
 import com.travel.dao.entity.Tour;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,24 @@ public class TourManager {
         }
 
         return tours;
+    }
+
+    /**
+     * @param req need for getting parameters and parsing SQL
+     * @param page should be in possible range in database
+     * @return a List with number of pageCapacity elements if page in correct range.
+     * But could provide an empty List
+     */
+    public List<Tour> getPiece(HttpServletRequest req, int page) {
+        TourDao tourDao = TourDaoFactory.getInstance();
+        List<Tour> tours = new ArrayList<>();
+        try {
+            tours = tourDao.performPieceQuery(req, pageCapacity * (page - 1), pageCapacity);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return tours;
+
     }
 
     /**

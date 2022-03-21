@@ -2,6 +2,7 @@ package com.travel.dao;
 
 import com.travel.dao.entity.Tour;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +74,16 @@ public class TourDaoFactory implements TourDao {
         return tours;
     }
 
+    /**
+     * query have to be processed
+     */
     @Override
-    public List<Tour> getPiece(int skip, int show) throws DaoException {
-        final String SQL = "select * from travelAgency.tours limit ?, ?";
+    public List<Tour> performPieceQuery(HttpServletRequest req, int skip, int show) throws DaoException {
+        String SQL = prepareSQL(req);
+        return getTours(skip, show, SQL);
+    }
+
+    private List<Tour> getTours(int skip, int show, String SQL) throws DaoException {
         List<Tour> tours = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(URL);
@@ -97,6 +105,57 @@ public class TourDaoFactory implements TourDao {
             throw new DaoException("cannot get tours", e);
         }
         return tours;
+    }
+
+    private String prepareSQL(HttpServletRequest req) {
+        boolean priceFlag = true;
+        boolean groupFlag = true;
+
+        List<String> types = new ArrayList<>();
+        if ("on".equals(req.getParameter("vacation"))) types.add("'vacation'");
+        if ("on".equals(req.getParameter("excursion"))) types.add("'excursion'");
+        if ("on".equals(req.getParameter("shopping"))) types.add("'shopping'");
+
+        List<String> hotels = new ArrayList<>();
+        if ("on".equals(req.getParameter("star1"))) hotels.add("1");
+        if ("on".equals(req.getParameter("star2"))) hotels.add("2");
+        if ("on".equals(req.getParameter("star3"))) hotels.add("3");
+        if ("on".equals(req.getParameter("star4"))) hotels.add("4");
+        if ("on".equals(req.getParameter("star5"))) hotels.add("5");
+
+        String priceFrom = req.getParameter("priceFrom");
+        String priceTo = req.getParameter("priceTo");
+        try {
+            Integer.parseInt(priceFrom);
+            Integer.parseInt(priceTo);
+        } catch (NumberFormatException e) {
+            priceFlag = false;
+        }
+        String groupFrom = req.getParameter("groupFrom");
+        String groupTo = req.getParameter("groupTo");
+        try {
+            Integer.parseInt(groupFrom);
+            Integer.parseInt(groupTo);
+        } catch (NumberFormatException e) {
+            groupFlag= false;
+        }
+
+        StringBuilder sb = new StringBuilder("select * from travelAgency.tours where true ");
+        if (!types.isEmpty()) sb.append(String.format("and type in (%s) ", String.join(", ", types)));
+        if (!hotels.isEmpty()) sb.append(String.format("and hotelStars in (%s) ", String.join(", ", hotels)));
+        if (priceFlag) sb.append(String.format("and price between %s and %s ", priceFrom, priceTo));
+        if (groupFlag) sb.append(String.format("and groupSize between %s and %s ", groupFrom, groupTo));
+
+        sb.append("order by isHot desc ");
+        sb.append("limit ?, ? ");
+
+        return sb.toString();
+    }
+
+    @Override
+    public List<Tour> getPiece(int skip, int show) throws DaoException {
+        final String SQL = "select * from travelAgency.tours order by isHot desc limit ?, ?";
+        return getTours(skip, show, SQL);
     }
 
     @Override

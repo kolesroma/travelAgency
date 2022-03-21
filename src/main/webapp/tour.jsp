@@ -12,7 +12,7 @@
 <body>
 <div class="tour">
     <img src="img/hotel.jpg" alt="hotel">
-    <p>TOUR</p>
+    <p>TOUR #${requestScope.tour.id}</p>
     <p>hot: ${requestScope.tour.hot}</p>
     <p>price: ${requestScope.tour.price}</p>
     <p>type: ${requestScope.tour.type}</p>
