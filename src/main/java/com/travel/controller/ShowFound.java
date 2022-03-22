@@ -16,9 +16,11 @@ public class ShowFound extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageSt = req.getParameter("page");
-        int page = new TourManager().parsePage(pageSt);
+        int maxPage = 1;
+        int page = new TourManager().parsePage(pageSt, maxPage);
         List<Tour> tours = new TourManager().getPiece(req, page);
 
+        req.setAttribute("maxPage", maxPage);
         req.setAttribute("path", "ShowFound");
         req.setAttribute("tours", tours);
         req.setAttribute("page", page);

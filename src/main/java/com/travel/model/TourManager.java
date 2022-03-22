@@ -53,14 +53,13 @@ public class TourManager {
      *               otherwise set default value.
      * @return int page that cannot be less than 1 and bigger than max page
      */
-    public int parsePage(String pageSt) {
+    public int parsePage(String pageSt, int maxPage) {
         int page;
         try {
             page = Integer.parseInt(pageSt);
         } catch (NumberFormatException e) {
             page = 1;
         }
-        int maxPage = getMaxPage();
         if (page <= 0) {
             page = 1;
         } else if (page > maxPage) {
@@ -87,7 +86,19 @@ public class TourManager {
     /**
      * @return max possible page. if error returns 1
      */
-    public int getMaxPage() {
+    public int getMaxPageForAll() {
+        TourDao tourDao = TourDaoFactory.getInstance();
+        int maxPage;
+        try {
+            maxPage = (int) Math.ceil((double) tourDao.countRows() / pageCapacity);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            maxPage = 1; // should never happen
+        }
+        return maxPage;
+    }
+
+    public int getMaxPageFound() {
         TourDao tourDao = TourDaoFactory.getInstance();
         int maxPage;
         try {

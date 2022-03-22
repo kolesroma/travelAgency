@@ -92,10 +92,10 @@ page: ${requestScope.page}
             return decodeURIComponent(name[1]);
     }
     let name = get("page");
-    if (name <= "1") {
+    if (name <= 1) {
         const prev = document.getElementById("prev");
         prev.removeAttribute("href");
-    } else if (name >= "20") {
+    } else if (name >= ${requestScope.maxPage}) {
         const next = document.getElementById("next");
         next.removeAttribute("href");
     }

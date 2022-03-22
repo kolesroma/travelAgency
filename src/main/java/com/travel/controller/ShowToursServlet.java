@@ -16,9 +16,11 @@ public class ShowToursServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageSt = req.getParameter("page");
-        int page = new TourManager().parsePage(pageSt);
+        int maxPage = new TourManager().getMaxPageForAll();
+        int page = new TourManager().parsePage(pageSt, maxPage);
         List<Tour> tours = new TourManager().getPiece(page);
 
+        req.setAttribute("maxPage", maxPage);
         req.setAttribute("path", "ShowToursServlet");
         req.setAttribute("tours", tours);
         req.setAttribute("page", page);
