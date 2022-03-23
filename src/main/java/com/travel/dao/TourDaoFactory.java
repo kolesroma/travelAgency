@@ -29,7 +29,6 @@ public class TourDaoFactory implements TourDao {
     public Tour getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.tours where id = ?";
         Tour tour;
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, id);
@@ -46,7 +45,6 @@ public class TourDaoFactory implements TourDao {
             e.printStackTrace();
             throw new DaoException("cannot get tour", e);
         }
-
         return tour;
     }
 
@@ -54,7 +52,6 @@ public class TourDaoFactory implements TourDao {
     public List<Tour> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.tours";
         List<Tour> tours = new ArrayList<>();
-
         try (Connection con = DriverManager.getConnection(URL);
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
@@ -70,7 +67,6 @@ public class TourDaoFactory implements TourDao {
             e.printStackTrace();
             throw new DaoException("cannot get tours", e);
         }
-
         return tours;
     }
 
@@ -78,8 +74,14 @@ public class TourDaoFactory implements TourDao {
      * query have to be processed
      */
     @Override
-    public List<Tour> performPieceQuery(HttpServletRequest req, int skip, int show) throws DaoException {
+    public List<Tour> getPiece(HttpServletRequest req, int skip, int show) throws DaoException {
         String SQL = prepareSQL(req);
+        return getTours(skip, show, SQL);
+    }
+
+    @Override
+    public List<Tour> getPiece(int skip, int show) throws DaoException {
+        final String SQL = "select * from travelAgency.tours order by isHot desc limit ?, ?";
         return getTours(skip, show, SQL);
     }
 
@@ -153,12 +155,6 @@ public class TourDaoFactory implements TourDao {
     }
 
     @Override
-    public List<Tour> getPiece(int skip, int show) throws DaoException {
-        final String SQL = "select * from travelAgency.tours order by isHot desc limit ?, ?";
-        return getTours(skip, show, SQL);
-    }
-
-    @Override
     public void add(Tour tour) throws DaoException {
         final String SQL = "insert into travelAgency.tours values (default, ?, ?, ?, ?, ?)";
 
@@ -177,9 +173,20 @@ public class TourDaoFactory implements TourDao {
     }
 
     @Override
-    public int countRows() throws DaoException {
+    public int countRowsAllTours() throws DaoException {
         final String SQL = "select count(*) from travelAgency.tours";
+        return getRows(SQL);
+    }
 
+    @Override
+    public int countRowsFound(HttpServletRequest req) throws DaoException {
+        final String SQL = prepareSQL(req)
+                .replace("*", "count(*)")
+                .replace("limit ?, ?", "");
+        return getRows(SQL);
+    }
+
+    private int getRows(String SQL) throws DaoException {
         try (Connection con = DriverManager.getConnection(URL);
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {

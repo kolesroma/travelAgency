@@ -2,6 +2,7 @@ package com.travel.controller;
 
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
+import com.travel.model.DataProcessor;
 import com.travel.model.OrderManager;
 import com.travel.model.TourManager;
 
@@ -18,7 +19,7 @@ public class RegisterOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
         String tourIdSt = req.getParameter("tourId");
-        int tourId = new TourManager().parseId(tourIdSt);
+        int tourId = new DataProcessor().parsePositiveInt(tourIdSt);
 
         Tour tour = new TourManager().getTourById(tourId);
         if (tour == null) {

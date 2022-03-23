@@ -81,8 +81,8 @@ tours <br>
         </a>
     </c:forEach>
 </div>
-<a id="prev" class="prev" href="${requestScope.path}?page=${requestScope.page-1}">previous</a> ~~
-<a id="next" href="${requestScope.path}?page=${requestScope.page+1}">next</a>
+<a id="prev" class="prev" href="${requestScope.path}page=${requestScope.page-1}">previous</a> ~~
+<a id="next" href="${requestScope.path}page=${requestScope.page+1}">next</a>
 page: ${requestScope.page}
 </body>
 
@@ -95,7 +95,8 @@ page: ${requestScope.page}
     if (name <= 1) {
         const prev = document.getElementById("prev");
         prev.removeAttribute("href");
-    } else if (name >= ${requestScope.maxPage}) {
+    }
+    if (name >= ${requestScope.maxPage}) {
         const next = document.getElementById("next");
         next.removeAttribute("href");
     }

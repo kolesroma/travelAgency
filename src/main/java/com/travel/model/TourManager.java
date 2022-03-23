@@ -13,54 +13,47 @@ public class TourManager {
     private final int pageCapacity = 4;
 
     /**
-     * @param page should be in possible range in database
-     * @return a List with number of pageCapacity elements if page in correct range.
-     * But could provide an empty List
+     * @param page should be in possible range in database or List will be empty
+     * @return a List with number of pageCapacity elements if page in correct range;
+     * empty List if incorrect range
      */
-    public List<Tour> getPiece(int page) {
+    public List<Tour> getToursOnPage(int page) {
         TourDao tourDao = TourDaoFactory.getInstance();
-        List<Tour> tours = new ArrayList<>();
-
+        List<Tour> tours;
         try {
             tours = tourDao.getPiece(pageCapacity * (page - 1), pageCapacity);
         } catch (DaoException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-
         return tours;
     }
 
     /**
      * @param req need for getting parameters and parsing SQL
-     * @param page should be in possible range in database
-     * @return a List with number of pageCapacity elements if page in correct range.
-     * But could provide an empty List
+     * @param page should be in possible range in database or List will be empty
+     * @return a List with number of pageCapacity elements if page in correct range;
+     * empty List if incorrect range
      */
-    public List<Tour> getPiece(HttpServletRequest req, int page) {
+    public List<Tour> getToursOnPage(HttpServletRequest req, int page) {
         TourDao tourDao = TourDaoFactory.getInstance();
-        List<Tour> tours = new ArrayList<>();
+        List<Tour> tours;
         try {
-            tours = tourDao.performPieceQuery(req, pageCapacity * (page - 1), pageCapacity);
+            tours = tourDao.getPiece(req, pageCapacity * (page - 1), pageCapacity);
         } catch (DaoException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
         return tours;
-
     }
 
     /**
-     * @param pageSt parse to int if possible,
-     *               otherwise set default value.
-     * @return int page that cannot be less than 1 and bigger than max page
+     * provide page in range [1; maxPage], not out of it
+     * @param page any int
+     * @return 1 if page < 1; maxPage if page > maxPage; page if in range [1; maxPage]
      */
-    public int parsePage(String pageSt, int maxPage) {
-        int page;
-        try {
-            page = Integer.parseInt(pageSt);
-        } catch (NumberFormatException e) {
-            page = 1;
-        }
-        if (page <= 0) {
+    public int setPageInCorrectRange(int page, int maxPage) {
+        if (page < 1) {
             page = 1;
         } else if (page > maxPage) {
             page = maxPage;
@@ -69,43 +62,28 @@ public class TourManager {
     }
 
     /**
-     * @param idSt String parsing to int
-     * @return parsed int or -1 if exception
-     */
-    public int parseId(String idSt) {
-        int id;
-        try {
-            id = Integer.parseInt(idSt);
-        } catch (NumberFormatException e) {
-            // send error
-            id = -1;
-        }
-        return id;
-    }
-
-    /**
      * @return max possible page. if error returns 1
      */
-    public int getMaxPageForAll() {
+    public int getMaxPageAllTours() {
         TourDao tourDao = TourDaoFactory.getInstance();
         int maxPage;
         try {
-            maxPage = (int) Math.ceil((double) tourDao.countRows() / pageCapacity);
+            maxPage = (int) Math.ceil((double) tourDao.countRowsAllTours() / pageCapacity);
         } catch (DaoException e) {
             e.printStackTrace();
-            maxPage = 1; // should never happen
+            return 1; // should never happen
         }
         return maxPage;
     }
 
-    public int getMaxPageFound() {
+    public int getMaxPageFound(HttpServletRequest req) {
         TourDao tourDao = TourDaoFactory.getInstance();
         int maxPage;
         try {
-            maxPage = (int) Math.ceil((double) tourDao.countRows() / pageCapacity);
+            maxPage = (int) Math.ceil((double) tourDao.countRowsFound(req) / pageCapacity);
         } catch (DaoException e) {
             e.printStackTrace();
-            maxPage = 1; // should never happen
+            return 1; // should never happen
         }
         return maxPage;
     }

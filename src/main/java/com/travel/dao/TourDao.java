@@ -10,13 +10,15 @@ public interface TourDao {
 
     List<Tour> getAll() throws DaoException;
 
-    List<Tour> performPieceQuery(HttpServletRequest req, int skip, int show) throws DaoException;
+    List<Tour> getPiece(HttpServletRequest req, int skip, int show) throws DaoException;
 
     List<Tour> getPiece(int skip, int show) throws DaoException;
 
     void add(Tour tour) throws DaoException;
 
-    int countRows() throws DaoException;
+    int countRowsAllTours() throws DaoException;
+
+    int countRowsFound(HttpServletRequest req) throws DaoException;
 
     void delete(Tour tour) throws DaoException;
 
