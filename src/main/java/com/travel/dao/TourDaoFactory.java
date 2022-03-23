@@ -157,7 +157,7 @@ public class TourDaoFactory implements TourDao {
     @Override
     public void add(Tour tour) throws DaoException {
         final String SQL = "insert into travelAgency.tours values (default, ?, ?, ?, ?, ?)";
-
+System.out.println(tour);
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tour.getPrice());

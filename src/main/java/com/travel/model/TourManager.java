@@ -116,4 +116,27 @@ public class TourManager {
             e.printStackTrace();
         }
     }
+
+    public boolean addTour(HttpServletRequest req) {
+        int price = new DataProcessor().parsePositiveInt(req.getParameter("price"));
+        boolean isHot = "on".equals(req.getParameter("isHot"));
+        int groupSize = new DataProcessor().parsePositiveInt(req.getParameter("groupSize"));
+        String type = req.getParameter("type");
+        int hotelStars = new DataProcessor().parsePositiveInt(req.getParameter("hotelStars"));
+
+        TourDao tourDao = TourDaoFactory.getInstance();
+        Tour tour = new Tour();
+        tour.setPrice(price);
+        tour.setHot(isHot);
+        tour.setGroupSize(groupSize);
+        tour.setType(type);
+        tour.setHotelStars(hotelStars);
+        try {
+            tourDao.add(tour);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }
