@@ -224,6 +224,7 @@ public class TourDaoFactory implements TourDao {
             ps.setInt(3, tour.getGroupSize());
             ps.setString(4, tour.getType());
             ps.setInt(5, tour.getHotelStars());
+            ps.setInt(6, tour.getId());
             int rows = ps.executeUpdate();
             if (rows == 0) throw new DaoException("there is no tour with id " + tour.getId());
         } catch (SQLException e) {

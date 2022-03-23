@@ -89,7 +89,7 @@ public class TourManager {
     }
 
     /**
-     * @return Tour with id as a parameter or null if Tour not found
+     * @return Tour with id as a parameter; null if Tour not found
      */
     public Tour getTourById(int id) {
         TourDao tourDao = TourDaoFactory.getInstance();
@@ -101,5 +101,19 @@ public class TourManager {
             return null;
         }
         return tour;
+    }
+
+    /**
+     * set isHot true if isHot was false;
+     * set isHot false if isHot was true
+     */
+    public void changeHot(Tour tour) {
+        TourDao tourDao = TourDaoFactory.getInstance();
+        tour.setHot(!tour.isHot());
+        try {
+            tourDao.update(tour);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 }

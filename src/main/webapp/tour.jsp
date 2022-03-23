@@ -24,6 +24,14 @@
     <c:if test="${requestScope.madeOrder}">
         You made order for this tour ✔
     </c:if>
+    <%--manager section--%>
+    <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
+        <form action="UpdateTour" method="post">
+            <input type="hidden" name="tourId" value="${requestScope.tour.id}">
+            <input type="submit" value="change hot">
+        </form>
+    </c:if>
+    <%--manager section--%>
 </div>
 </body>
 </html>
