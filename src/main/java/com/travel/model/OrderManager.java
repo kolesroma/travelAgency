@@ -8,8 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManager {
+    private final OrderDao orderDao;
+
+    public OrderManager() {
+        this.orderDao = OrderDaoFactory.getInstance();
+    }
+
     public boolean registerOrder(int userId, int tourId) {
-        OrderDao orderDao = OrderDaoFactory.getInstance();
         try {
             orderDao.add(userId, tourId);
         } catch (DaoException e) {
@@ -26,7 +31,6 @@ public class OrderManager {
      * @return true if exists; false if not exists or exception
      */
     public boolean isExist(int userId, int tourId) {
-        OrderDao orderDao = OrderDaoFactory.getInstance();
         Order order;
         try {
             order = orderDao.getByUserIdTourId(userId, tourId);
@@ -41,12 +45,12 @@ public class OrderManager {
      * @return List of user orders; could be an empty List
      */
     public List<Order> getOrdersByUserId(int userId) {
-        OrderDao orderDao = OrderDaoFactory.getInstance();
-        List<Order> orders = new ArrayList<>();
+        List<Order> orders;
         try {
             orders = orderDao.getUserOrders(userId);
         } catch (DaoException e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
         return orders;
     }

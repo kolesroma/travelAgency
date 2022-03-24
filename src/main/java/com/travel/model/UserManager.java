@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
+    private final UserDao userDao;
+
+    public UserManager() {
+        this.userDao = UserDaoFactory.getInstance();
+    }
+
     public User login(String login, String password) throws AuthorizationException {
-        UserDao userDao = UserDaoFactory.getInstance();
         User user;
         try {
             user = userDao.getByLogin(login);
@@ -25,8 +30,6 @@ public class UserManager {
     }
 
     public void register(String login, String password, String name, String surname, String ageSt, String address) throws AuthorizationException {
-        UserDao userDao = UserDaoFactory.getInstance();
-
         if (login.length() == 0 || password.length() == 0 || name.length() == 0 ||
                 surname.length() == 0 || ageSt.length() == 0 || address.length() == 0) {
             throw new AuthorizationException("empty field registration");
@@ -60,7 +63,6 @@ public class UserManager {
      * @return List of users; empty List if exception
      */
     public List<User> getAll() {
-        UserDao userDao = UserDaoFactory.getInstance();
         List<User> users;
         try {
             users = userDao.getAll();
@@ -75,7 +77,6 @@ public class UserManager {
      * @return User with id; null if not found
      */
     public User getById(int id) {
-        UserDao userDao = UserDaoFactory.getInstance();
         User user;
         try {
             user = userDao.getById(id);

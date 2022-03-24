@@ -10,7 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TourManager {
+    private final TourDao tourDao;
     private final int pageCapacity = 4;
+
+    public TourManager() {
+        this.tourDao = TourDaoFactory.getInstance();
+    }
 
     /**
      * @param page should be in possible range in database or List will be empty
@@ -18,7 +23,6 @@ public class TourManager {
      * empty List if incorrect range
      */
     public List<Tour> getToursOnPage(int page) {
-        TourDao tourDao = TourDaoFactory.getInstance();
         List<Tour> tours;
         try {
             tours = tourDao.getPiece(pageCapacity * (page - 1), pageCapacity);
@@ -36,7 +40,6 @@ public class TourManager {
      * empty List if incorrect range
      */
     public List<Tour> getToursOnPage(HttpServletRequest req, int page) {
-        TourDao tourDao = TourDaoFactory.getInstance();
         List<Tour> tours;
         try {
             tours = tourDao.getPiece(req, pageCapacity * (page - 1), pageCapacity);
@@ -65,7 +68,6 @@ public class TourManager {
      * @return max possible page. if error returns 1
      */
     public int getMaxPageAllTours() {
-        TourDao tourDao = TourDaoFactory.getInstance();
         int maxPage;
         try {
             maxPage = (int) Math.ceil((double) tourDao.countRowsAllTours() / pageCapacity);
@@ -77,7 +79,6 @@ public class TourManager {
     }
 
     public int getMaxPageFound(HttpServletRequest req) {
-        TourDao tourDao = TourDaoFactory.getInstance();
         int maxPage;
         try {
             maxPage = (int) Math.ceil((double) tourDao.countRowsFound(req) / pageCapacity);
@@ -92,7 +93,6 @@ public class TourManager {
      * @return Tour with id as a parameter; null if Tour not found
      */
     public Tour getTourById(int id) {
-        TourDao tourDao = TourDaoFactory.getInstance();
         Tour tour;
         try {
             tour = tourDao.getById(id);
@@ -108,7 +108,6 @@ public class TourManager {
      * set isHot false if isHot was true
      */
     public void changeHot(Tour tour) {
-        TourDao tourDao = TourDaoFactory.getInstance();
         tour.setHot(!tour.isHot());
         try {
             tourDao.update(tour);
@@ -124,7 +123,6 @@ public class TourManager {
         String type = req.getParameter("type");
         int hotelStars = new DataProcessor().parsePositiveInt(req.getParameter("hotelStars"));
 
-        TourDao tourDao = TourDaoFactory.getInstance();
         Tour tour = new Tour();
         tour.setPrice(price);
         tour.setHot(isHot);
