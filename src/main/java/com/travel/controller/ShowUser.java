@@ -1,0 +1,36 @@
+package com.travel.controller;
+
+import com.travel.dao.entity.User;
+import com.travel.model.DataProcessor;
+import com.travel.model.UserManager;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/ShowUser")
+public class ShowUser extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String role = ((User) req.getSession().getAttribute("loggedUser")).getRole();
+        if (!("manager".equals(role) || "admin".equals(role))) {
+            resp.sendRedirect("home.jsp");
+            return;
+        }
+
+        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
+        User user = new UserManager().getById(userId);
+        if (user == null) {
+            resp.sendError(400, "there is no user with id " + userId);
+            return;
+        }
+
+        req.setAttribute("user", user);
+        req.getRequestDispatcher("userInfo.jsp")
+                .forward(req, resp);
+    }
+}

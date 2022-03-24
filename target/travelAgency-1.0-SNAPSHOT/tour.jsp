@@ -7,7 +7,7 @@
 </style>
 <head>
     <meta charset="UTF-8">
-    <title>home</title>
+    <title>tours</title>
 </head>
 <body>
 <div class="tour">

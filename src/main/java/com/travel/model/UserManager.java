@@ -5,6 +5,9 @@ import com.travel.dao.UserDao;
 import com.travel.dao.UserDaoFactory;
 import com.travel.dao.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserManager {
     public User login(String login, String password) throws AuthorizationException {
         UserDao userDao = UserDaoFactory.getInstance();
@@ -51,5 +54,35 @@ public class UserManager {
             e.printStackTrace();
             throw new AuthorizationException("cannot register user, try change a login", e);
         }
+    }
+
+    /**
+     * @return List of users; empty List if exception
+     */
+    public List<User> getAll() {
+        UserDao userDao = UserDaoFactory.getInstance();
+        List<User> users;
+        try {
+            users = userDao.getAll();
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+        return users;
+    }
+
+    /**
+     * @return User with id; null if not found
+     */
+    public User getById(int id) {
+        UserDao userDao = UserDaoFactory.getInstance();
+        User user;
+        try {
+            user = userDao.getById(id);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return user;
     }
 }
