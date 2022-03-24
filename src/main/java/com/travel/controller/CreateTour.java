@@ -17,6 +17,12 @@ import java.io.IOException;
 public class CreateTour extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String role = ((User) req.getSession().getAttribute("loggedUser")).getRole();
+        if (!"admin".equals(role)) {
+            resp.sendRedirect("home.jsp");
+            return;
+        }
+
         boolean added = new TourManager().addTour(req);
         if (!added) {
             resp.sendError(400, "cannot add tour");
