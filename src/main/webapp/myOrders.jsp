@@ -12,7 +12,7 @@
             order number: ${order.id}
             status: ${order.status}
             discount: ${order.discount}%
-            <a href="ShowTourServlet?id=${order.tourId}">review your order</a>
+            <a href="ShowTour?id=${order.tourId}">review your order</a>
         </div>
     </c:forEach>
 </div>

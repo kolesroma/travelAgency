@@ -9,10 +9,10 @@
 <body>
 sweet home <a href="ShowMyOrders">my orders</a> <br>
 <a href="myInfo.jsp">my info</a>
-<form action="LogoutServlet" method="post">
+<form action="Logout" method="post">
     <input type="submit" value="LOG OUT">
 </form>
-<form action="ShowToursServlet" method="get">
+<form action="ShowAllTours" method="get">
     <input type="hidden" name="page" value="1">
     <input type="submit" value="GO TO TOURS">
 </form>

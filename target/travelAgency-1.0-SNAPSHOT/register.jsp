@@ -5,7 +5,7 @@
     <title>Register</title>
 </head>
 <body>
-<form action="RegisterServlet" method="post">
+<form action="Register" method="post">
     name: <input type="text" name="name"><br>
     surname: <input type="text" name="surname"><br>
     age: <input type="text" name="age"><br>

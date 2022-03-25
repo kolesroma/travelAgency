@@ -13,26 +13,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/RegisterOrderServlet")
-public class RegisterOrderServlet extends HttpServlet {
+@WebServlet("/ShowTour")
+public class ShowTour extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
-        String tourIdSt = req.getParameter("tourId");
+        String tourIdSt = req.getParameter("id");
         int tourId = new DataProcessor().parsePositiveInt(tourIdSt);
-
         Tour tour = new TourManager().getTourById(tourId);
+
         if (tour == null) {
-            resp.sendError(400, "there is no tour with id " + tourIdSt);
+            resp.sendError(400, "this tour is not exist");
             return;
         }
 
-        boolean added = new OrderManager().registerOrder(userId, tourId);
-        if (!added) {
-            resp.sendError(400, "order already registered");
-            return;
-        }
+        int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
+        boolean madeOrder = new OrderManager().isExist(userId, tourId);
 
-        resp.sendRedirect("home.jsp");
+        req.setAttribute("madeOrder", madeOrder);
+        req.setAttribute("tour", tour);
+        req.getRequestDispatcher("tour.jsp")
+                .forward(req, resp);
     }
 }

@@ -5,7 +5,7 @@
     <title>Log in</title>
 </head>
 <body>
-<form action="LoginServlet" method="post">
+<form action="Login" method="post">
     <input type="text" name="login"><br>
     <input type="password" name="password"><br>
     <input type="submit" value="LOG IN">

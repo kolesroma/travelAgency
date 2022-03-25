@@ -33,7 +33,7 @@
 <body>
 tours <br>
 <a href="myInfo.jsp">my info</a>
-<form action="LogoutServlet" method="post">
+<form action="Logout" method="post">
     <input type="submit" value="LOG OUT">
 </form>
 <form class="choose" action="ShowFound">
@@ -68,7 +68,7 @@ tours <br>
 </form>
 <div class="tour-container">
     <c:forEach var="tour" items="${requestScope.tours}">
-        <a href="ShowTourServlet?id=${tour.id}">
+        <a href="ShowTour?id=${tour.id}">
             <div class="tour">
                 <img src="img/hotel.jpg" alt="hotel">
                 <p>TOUR #${tour.id}</p>

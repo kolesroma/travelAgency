@@ -9,7 +9,7 @@
 <%--admin section--%>
 <c:if test="${sessionScope.loggedUser.role == 'admin'}">
     <form action="CreateTour" method="post">
-        price: <input type="text" name="price"><br>
+        price: <input type="number" min="100" step="100" name="price"><br>
         is hot: <input type="checkbox" name="isHot"><br>
         group size: <input type="number" min="1" step="1" name="groupSize"><br>
         type: <select name="type" id="types">
