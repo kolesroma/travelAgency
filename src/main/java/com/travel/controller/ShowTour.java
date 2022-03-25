@@ -17,14 +17,9 @@ import java.io.IOException;
 public class ShowTour extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String tourIdSt = req.getParameter("id");
-        int tourId = new DataProcessor().parsePositiveInt(tourIdSt);
-        Tour tour = new TourManager().getTourById(tourId);
-
-        if (tour == null) {
-            resp.sendError(400, "this tour is not exist");
-            return;
-        }
+        int tourId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
+        Tour tour = getTour(resp, tourId);
+        if (tour == null) return;
 
         int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
         boolean madeOrder = new OrderManager().isExist(userId, tourId);
@@ -33,5 +28,14 @@ public class ShowTour extends HttpServlet {
         req.setAttribute("tour", tour);
         req.getRequestDispatcher("tour.jsp")
                 .forward(req, resp);
+    }
+
+    private Tour getTour(HttpServletResponse resp, int tourId) throws IOException {
+        Tour tour = new TourManager().getTourById(tourId);
+        if (tour == null) {
+            resp.sendError(400, "this tour is not exist");
+            return null;
+        }
+        return tour;
     }
 }

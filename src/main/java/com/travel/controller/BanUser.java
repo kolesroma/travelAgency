@@ -1,9 +1,8 @@
 package com.travel.controller;
 
+import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
-import com.travel.model.Accessor;
-import com.travel.model.DataProcessor;
-import com.travel.model.UserManager;
+import com.travel.model.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,16 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/ShowUser")
-public class ShowUser extends HttpServlet {
+@WebServlet("/BanUser")
+public class BanUser extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (new Accessor().notAdmin(req, resp)) return;
 
         User user = getUser(req, resp);
         if (user == null) return;
+
+        new UserManager().changeBan(user);
 
         req.setAttribute("user", user);
         req.getRequestDispatcher("userInfo.jsp")

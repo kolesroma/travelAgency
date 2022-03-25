@@ -3,6 +3,7 @@ package com.travel.model;
 import com.travel.dao.DaoException;
 import com.travel.dao.UserDao;
 import com.travel.dao.UserDaoFactory;
+import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
 
 import java.util.ArrayList;
@@ -85,5 +86,18 @@ public class UserManager {
             return null;
         }
         return user;
+    }
+
+    /**
+     * set isBanned true if isBanned was false;
+     * set isBanned false if isBanned was true
+     */
+    public void changeBan(User user) {
+        user.setBanned(!user.isBanned());
+        try {
+            userDao.update(user);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 }
