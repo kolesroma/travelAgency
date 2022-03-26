@@ -25,10 +25,19 @@
         You made order for this tour ✔
     </c:if>
     <%--manager section--%>
+    <hr>
     <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
         <form action="SetHotTour" method="post">
             <input type="hidden" name="tourId" value="${requestScope.tour.id}">
             <input type="submit" value="change hot">
+        </form>
+        <form action="#">
+            <select name="status">
+                <option value="registered">excursion</option>
+                <option value="paid">shopping</option>
+                <option value="canceled">vacation</option>
+            </select>
+            <input type="submit" value="change status">
         </form>
     </c:if>
     <%--manager section--%>

@@ -17,18 +17,16 @@ public class BanUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (new Accessor().notAdmin(req, resp)) return;
 
-        User user = getUser(req, resp);
+        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
+        User user = getUser(req, resp, userId);
         if (user == null) return;
 
         new UserManager().changeBan(user);
 
-        req.setAttribute("user", user);
-        req.getRequestDispatcher("userInfo.jsp")
-                .forward(req, resp);
+        resp.sendRedirect("ShowUser?id=" + userId);
     }
 
-    private User getUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
+    private User getUser(HttpServletRequest req, HttpServletResponse resp, int userId) throws IOException {
         User user = new UserManager().getById(userId);
         if (user == null) {
             resp.sendError(400, "there is no user with id " + userId);

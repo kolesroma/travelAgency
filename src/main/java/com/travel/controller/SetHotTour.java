@@ -26,13 +26,7 @@ public class SetHotTour extends HttpServlet {
 
         new TourManager().changeHot(tour);
 
-        int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
-        boolean madeOrder = new OrderManager().isExist(userId, tourId);
-
-        req.setAttribute("madeOrder", madeOrder);
-        req.setAttribute("tour", tour);
-        req.getRequestDispatcher("tour.jsp")
-                .forward(req, resp);
+        resp.sendRedirect("ShowTour?id=" + tourId);
     }
 
     private Tour getTour(HttpServletResponse resp, int tourId) throws IOException {
