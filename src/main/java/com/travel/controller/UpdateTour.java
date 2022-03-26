@@ -18,29 +18,23 @@ import java.io.IOException;
 public class UpdateTour extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
+        if (new Accessor().notAdmin(req, resp)) return;
 
         int tourId = new DataProcessor().parsePositiveInt(req.getParameter("tourId"));
-        Tour tour = getTour(resp, tourId);
-        if (tour == null) return;
 
-        new TourManager().changeHot(tour);
+        Tour tour = getTourWithId(req, tourId);
+        boolean updated = new TourManager().update(tour);
+        if (!updated) {
+            resp.sendError(400, "cannot update");
+            return;
+        }
 
-        int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
-        boolean madeOrder = new OrderManager().isExist(userId, tourId);
-
-        req.setAttribute("madeOrder", madeOrder);
-        req.setAttribute("tour", tour);
-        req.getRequestDispatcher("tour.jsp")
-                .forward(req, resp);
+        resp.sendRedirect("ShowTour?id=" + tourId);
     }
 
-    private Tour getTour(HttpServletResponse resp, int tourId) throws IOException {
-        Tour tour = new TourManager().getTourById(tourId);
-        if (tour == null) {
-            resp.sendError(400, "this tour is not exist");
-            return null;
-        }
+    private Tour getTourWithId(HttpServletRequest req, int tourId) {
+        Tour tour = new TourManager().prepareTour(req);
+        tour.setId(tourId);
         return tour;
     }
 }

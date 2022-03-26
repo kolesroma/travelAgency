@@ -15,13 +15,13 @@ age: ${requestScope.user.age}<br>
 address: ${requestScope.user.address}<br>
 role: ${requestScope.user.role}<br>
 is banned: ${requestScope.user.banned}<br>
-<%--manager section--%>
-<c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
+<%--admin section--%>
+<c:if test="${sessionScope.loggedUser.role == 'admin'}">
     <form action="BanUser" method="post">
         <input type="hidden" name="id" value="${requestScope.user.id}">
         <input type="submit" value="change ban">
     </form>
 </c:if>
-<%--manager section--%>
+<%--admin section--%>
 </body>
 </html>

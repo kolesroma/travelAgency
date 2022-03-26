@@ -2,6 +2,7 @@ package com.travel.controller;
 
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
+import com.travel.model.Accessor;
 import com.travel.model.DataProcessor;
 import com.travel.model.OrderManager;
 import com.travel.model.TourManager;
@@ -17,11 +18,7 @@ import java.io.IOException;
 public class CreateTour extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String role = ((User) req.getSession().getAttribute("loggedUser")).getRole();
-        if (!"admin".equals(role)) {
-            resp.sendRedirect("home.jsp");
-            return;
-        }
+        if(new Accessor().notAdmin(req, resp)) return;
 
         boolean added = new TourManager().addTour(req);
         if (!added) {

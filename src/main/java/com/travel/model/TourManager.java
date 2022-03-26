@@ -116,7 +116,24 @@ public class TourManager {
         }
     }
 
+
     public boolean addTour(HttpServletRequest req) {
+        Tour tour = prepareTour(req);
+        try {
+            tourDao.add(tour);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * gets params from req, processes them and create a new Tour with such information
+     * @param req should include params price, isHot, groupSize, type and hotelStars
+     * @return Tour with such information (except setting id)
+     */
+    public Tour prepareTour(HttpServletRequest req) {
         int price = new DataProcessor().parsePositiveInt(req.getParameter("price"));
         boolean isHot = "on".equals(req.getParameter("isHot"));
         int groupSize = new DataProcessor().parsePositiveInt(req.getParameter("groupSize"));
@@ -129,10 +146,13 @@ public class TourManager {
         tour.setGroupSize(groupSize);
         tour.setType(type);
         tour.setHotelStars(hotelStars);
+        return tour;
+    }
+
+    public boolean update(Tour tour) {
         try {
-            tourDao.add(tour);
+            tourDao.update(tour);
         } catch (DaoException e) {
-            e.printStackTrace();
             return false;
         }
         return true;
