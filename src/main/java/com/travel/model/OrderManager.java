@@ -54,4 +54,27 @@ public class OrderManager {
         }
         return orders;
     }
+
+    /**
+     * @param orderId positive int
+     * @return Order with id; null if not found
+     */
+    public Order getById(int orderId) {
+        Order order;
+        try {
+            order = orderDao.getById(orderId);
+        } catch (DaoException e) {
+            return null;
+        }
+        return order;
+    }
+
+    public boolean update(Order order) {
+        try {
+            orderDao.update(order);
+        } catch (DaoException e) {
+            return false;
+        }
+        return true;
+    }
 }

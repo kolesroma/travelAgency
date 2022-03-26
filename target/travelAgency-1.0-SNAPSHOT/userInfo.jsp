@@ -15,8 +15,15 @@ age: ${requestScope.user.age}<br>
 address: ${requestScope.user.address}<br>
 role: ${requestScope.user.role}<br>
 is banned: ${requestScope.user.banned}<br>
+<%--manager section--%>
+<c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
+    <hr>
+    <a href="ShowUserOrders?id=${requestScope.user.id}">order list</a>
+</c:if>
+<%--manager section--%>
 <%--admin section--%>
 <c:if test="${sessionScope.loggedUser.role == 'admin'}">
+    <hr>
     <form action="BanUser" method="post">
         <input type="hidden" name="id" value="${requestScope.user.id}">
         <input type="submit" value="change ban">

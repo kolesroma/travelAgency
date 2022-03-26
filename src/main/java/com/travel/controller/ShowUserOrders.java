@@ -1,10 +1,10 @@
 package com.travel.controller;
 
 import com.travel.dao.entity.Order;
-import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
+import com.travel.model.Accessor;
+import com.travel.model.DataProcessor;
 import com.travel.model.OrderManager;
-import com.travel.model.TourManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/ShowMyOrders")
-public class ShowMyOrders extends HttpServlet {
+@WebServlet("/ShowUserOrders")
+public class ShowUserOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
+        if (new Accessor().notManagerOrAdmin(req, resp)) return;
+
+        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
         List<Order> orders = new OrderManager().getOrdersByUserId(userId);
 
         req.setAttribute("orders", orders);

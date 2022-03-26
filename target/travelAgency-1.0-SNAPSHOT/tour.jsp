@@ -31,14 +31,6 @@
             <input type="hidden" name="tourId" value="${requestScope.tour.id}">
             <input type="submit" value="change hot">
         </form>
-        <form action="#">
-            <select name="status">
-                <option value="registered">excursion</option>
-                <option value="paid">shopping</option>
-                <option value="canceled">vacation</option>
-            </select>
-            <input type="submit" value="change status">
-        </form>
     </c:if>
     <%--manager section--%>
     <%--admin section--%>
