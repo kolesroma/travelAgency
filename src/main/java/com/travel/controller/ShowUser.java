@@ -23,7 +23,7 @@ public class ShowUser extends HttpServlet {
         if (user == null) return;
 
         req.setAttribute("user", user);
-        req.getRequestDispatcher("userInfo.jsp")
+        req.getRequestDispatcher("WEB-INF/view/userInfo.jsp")
                 .forward(req, resp);
     }
 

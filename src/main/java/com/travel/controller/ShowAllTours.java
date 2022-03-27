@@ -26,7 +26,7 @@ public class ShowAllTours extends HttpServlet {
         req.setAttribute("path", "ShowAllTours?");
         req.setAttribute("tours", tours);
         req.setAttribute("page", page);
-        req.getRequestDispatcher("allTours.jsp")
+        req.getRequestDispatcher("WEB-INF/view/allTours.jsp")
                 .forward(req, resp);
     }
 }

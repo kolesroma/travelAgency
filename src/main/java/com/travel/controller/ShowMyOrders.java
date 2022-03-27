@@ -22,7 +22,7 @@ public class ShowMyOrders extends HttpServlet {
         List<Order> orders = new OrderManager().getOrdersByUserId(userId);
 
         req.setAttribute("orders", orders);
-        req.getRequestDispatcher("orders.jsp")
+        req.getRequestDispatcher("WEB-INF/view/orders.jsp")
                 .forward(req, resp);
     }
 }

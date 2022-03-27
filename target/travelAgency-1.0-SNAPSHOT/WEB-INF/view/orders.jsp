@@ -12,7 +12,7 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="WEB-INF/sidebar.jspf"%>
+<%@include file="sidebar.jspf"%>
 <div>
     <c:forEach var="order" items="${requestScope.orders}">
         <div>

@@ -15,7 +15,7 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="WEB-INF/sidebar.jspf"%>
+<%@include file="sidebar.jspf"%>
 <div class="tour">
     <img src="img/hotel.jpg" alt="hotel">
     <p>TOUR #${requestScope.tour.id}</p>

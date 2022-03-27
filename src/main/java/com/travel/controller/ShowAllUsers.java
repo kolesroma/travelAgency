@@ -26,7 +26,7 @@ public class ShowAllUsers extends HttpServlet {
 
         List<User> users = new UserManager().getAll();
         req.setAttribute("users", users);
-        req.getRequestDispatcher("allUsers.jsp")
+        req.getRequestDispatcher("WEB-INF/view/allUsers.jsp")
                 .include(req, resp);
     }
 }

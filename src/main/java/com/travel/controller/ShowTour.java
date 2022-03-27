@@ -26,7 +26,7 @@ public class ShowTour extends HttpServlet {
 
         req.setAttribute("madeOrder", madeOrder);
         req.setAttribute("tour", tour);
-        req.getRequestDispatcher("tour.jsp")
+        req.getRequestDispatcher("WEB-INF/view/tour.jsp")
                 .forward(req, resp);
     }
 

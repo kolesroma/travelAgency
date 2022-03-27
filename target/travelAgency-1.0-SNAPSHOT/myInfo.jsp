@@ -11,7 +11,7 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="WEB-INF/sidebar.jspf"%>
+<%@include file="WEB-INF/view/sidebar.jspf"%>
 
 id: ${sessionScope.loggedUser.id}<br>
 login: ${sessionScope.loggedUser.login}<br>
