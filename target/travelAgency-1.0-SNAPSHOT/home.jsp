@@ -5,17 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>home</title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-sweet home <a href="ShowMyOrders">my orders</a> <br>
-<a href="myInfo.jsp">my info</a>
-<form action="Logout" method="post">
-    <input type="submit" value="LOG OUT">
-</form>
-<form action="ShowAllTours" method="get">
-    <input type="hidden" name="page" value="1">
-    <input type="submit" value="GO TO TOURS">
-</form>
+<%@include file="WEB-INF/sidebar.jspf"%>
+
 <%--manager section--%>
 <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
     all users:<jsp:include page="ShowAllUsers"/>

@@ -1,0 +1,39 @@
+<nav>
+    <div class="wrapper-nav-items">
+        <a class="logo" href="home.jsp">
+            <div class="logo-inside-container">
+                <span><ion-icon name="home-outline" id="home-outline"></ion-icon></span>
+                <span>Home</span>
+            </div>
+        </a>
+    </div>
+    <div class="wrapper-nav-items">
+        <a href="ShowMyOrders">
+            <div class="nav-item">
+                <span><ion-icon class="nav-item-icon" name="list-outline"></ion-icon></span>
+                <span>My orders</span>
+            </div>
+        </a>
+        <a href="myInfo.jsp">
+            <div class="nav-item">
+                <span><ion-icon class="nav-item-icon" name="information-circle-outline"></ion-icon></span>
+                <span>My info</span>
+            </div>
+        </a>
+        <a href="ShowAllTours?page=1">
+            <div class="nav-item">
+                <span><ion-icon class="nav-item-icon" name="airplane-outline"></ion-icon></span>
+                <span>Go to tours</span>
+            </div>
+        </a>
+        <a>
+            <div class="nav-item nav-item-bnt-wrapper">
+                <span><ion-icon class="nav-item-icon" name="log-out-outline"></ion-icon></span>
+                <span>Log out</span>
+                <form class="nav-item-bnt" action="Logout" method="post">
+                    <input type="submit" value="">
+                </form>
+            </div>
+        </a>
+    </div>
+</nav>
