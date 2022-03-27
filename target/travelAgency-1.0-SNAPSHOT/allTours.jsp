@@ -2,40 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-<style>
-    .tour-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 40px;
-    }
-
-    img {
-        max-width: 300px;
-    }
-
-    .tour {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .choose {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 40px;
-    }
-</style>
 <head>
     <meta charset="UTF-8">
     <title>home</title>
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-tours <br>
-<a href="myInfo.jsp">my info</a>
-<form action="Logout" method="post">
-    <input type="submit" value="LOG OUT">
-</form>
+<%@include file="WEB-INF/sidebar.jspf"%>
 <form class="choose" action="ShowFound">
     <div class="type">
         TOUR<br>
@@ -70,9 +47,11 @@ tours <br>
     <c:forEach var="tour" items="${requestScope.tours}">
         <a href="ShowTour?id=${tour.id}">
             <div class="tour">
+                <c:if test="${tour.hot}">
+                    <span class="fire-span"><ion-icon class="fire" name="flame"></ion-icon></span>
+                </c:if>
                 <img src="img/hotel.jpg" alt="hotel">
                 <p>TOUR #${tour.id}</p>
-                <p>hot: ${tour.hot}</p>
                 <p>price: ${tour.price}</p>
                 <p>type: ${tour.type}</p>
                 <p>size group: ${tour.groupSize}</p>

@@ -12,7 +12,6 @@
 </head>
 <body>
 <%@include file="WEB-INF/sidebar.jspf"%>
-
 <%--manager section--%>
 <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
     all users:<jsp:include page="ShowAllUsers"/>
