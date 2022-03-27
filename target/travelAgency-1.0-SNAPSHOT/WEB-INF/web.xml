@@ -3,4 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>AccessManagerFilter</filter-name>
+        <url-pattern>/ChangeOrderStatus</url-pattern>
+        <url-pattern>/SetHotTour</url-pattern>
+        <url-pattern>/ShowAllUsers</url-pattern>
+        <url-pattern>/ShowUser</url-pattern>
+        <url-pattern>/ShowUserOrders</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>AccessAdminFilter</filter-name>
+        <url-pattern>/BanUser</url-pattern>
+        <url-pattern>/CreateTour</url-pattern>
+        <url-pattern>/UpdateTour</url-pattern>
+        <url-pattern>/createTour.jsp</url-pattern>
+    </filter-mapping>
+
 </web-app>

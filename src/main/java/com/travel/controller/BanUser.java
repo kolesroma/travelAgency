@@ -1,6 +1,5 @@
 package com.travel.controller;
 
-import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
 import com.travel.model.*;
 
@@ -16,8 +15,6 @@ import java.io.IOException;
 public class BanUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notAdmin(req, resp)) return;
-
         int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
         User user = getUser(req, resp, userId);
         if (user == null) return;

@@ -19,8 +19,6 @@ import java.util.List;
 public class ShowUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
-
         User user = getUser(req, resp);
         if (user == null) return;
 

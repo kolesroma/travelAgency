@@ -18,8 +18,6 @@ import java.io.IOException;
 public class ChangeOrderStatus extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
-
         int orderId = new DataProcessor().parsePositiveInt(req.getParameter("orderId"));
         Order order = new OrderManager().getById(orderId);
 

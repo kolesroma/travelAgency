@@ -17,8 +17,6 @@ import java.util.List;
 public class ShowAllUsers extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
-
         List<User> users = new UserManager().getAll();
         req.setAttribute("users", users);
         req.getRequestDispatcher("WEB-INF/view/allUsers.jsp")

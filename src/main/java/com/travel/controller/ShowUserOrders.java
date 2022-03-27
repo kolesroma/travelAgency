@@ -20,8 +20,6 @@ import java.util.List;
 public class ShowUserOrders extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notManagerOrAdmin(req, resp)) return;
-
         int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
         List<Order> orders = new OrderManager().getOrdersByUserId(userId);
 

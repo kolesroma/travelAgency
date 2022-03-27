@@ -16,8 +16,6 @@ import java.io.IOException;
 public class UpdateTour extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (new Accessor().notAdmin(req, resp)) return;
-
         int tourId = new DataProcessor().parsePositiveInt(req.getParameter("tourId"));
 
         Tour tour = getTourWithId(req, tourId);
