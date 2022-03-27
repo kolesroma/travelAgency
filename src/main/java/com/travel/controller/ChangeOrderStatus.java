@@ -3,6 +3,7 @@ package com.travel.controller;
 import com.travel.dao.entity.Order;
 import com.travel.model.Accessor;
 import com.travel.model.DataProcessor;
+import com.travel.model.ManagerAccess;
 import com.travel.model.OrderManager;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@ManagerAccess
 @WebServlet("/ChangeOrderStatus")
 public class ChangeOrderStatus extends HttpServlet {
     @Override

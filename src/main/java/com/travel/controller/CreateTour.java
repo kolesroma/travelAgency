@@ -2,10 +2,7 @@ package com.travel.controller;
 
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
-import com.travel.model.Accessor;
-import com.travel.model.DataProcessor;
-import com.travel.model.OrderManager;
-import com.travel.model.TourManager;
+import com.travel.model.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@AdminAccess
 @WebServlet("/CreateTour")
 public class CreateTour extends HttpServlet {
     @Override

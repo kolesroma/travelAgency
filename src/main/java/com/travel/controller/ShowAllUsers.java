@@ -2,6 +2,7 @@ package com.travel.controller;
 
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
+import com.travel.model.AdminAccess;
 import com.travel.model.DataProcessor;
 import com.travel.model.TourManager;
 import com.travel.model.UserManager;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@AdminAccess
 @WebServlet("/ShowAllUsers")
 public class ShowAllUsers extends HttpServlet {
     @Override
