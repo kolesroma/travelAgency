@@ -12,7 +12,7 @@ import java.util.Set;
 
 @WebFilter(filterName = "SessionFilter")
 public class SessionFilter implements Filter {
-    private static final Set<String> IGNORE_PATHS = ImmutableSet.of("/index.jsp", "/", "/Login", "/register.jsp", "/Register");
+    private static final Set<String> IGNORE_PATHS = ImmutableSet.of("/index.jsp", "/", "/Login", "/register.jsp", "/Register", "/styles/error.css");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

@@ -1,0 +1,58 @@
+body {
+    background: #23232e;
+}
+
+ion-icon {
+    color: white;
+    font-size: 60px;
+}
+
+.wrapper-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+h2 {
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 30px;
+    color: white;
+}
+
+h2:nth-child(1) {
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    color: white;
+    margin-top: 20px;
+}
+
+hr {
+    width: 350px;
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#icon-text{
+    padding: 40px;
+}
+
+#icon-text:hover {
+    background-color: #d34b4b;
+}

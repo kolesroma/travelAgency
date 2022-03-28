@@ -25,7 +25,7 @@
     <p>size group: ${requestScope.tour.groupSize}</p>
     <p>hotel: ${requestScope.tour.hotelStars}*</p>
     <c:if test="${!requestScope.madeOrder}">
-        <a href="CreateOrder?tourId=${requestScope.tour.id}">__ order this tour __</a>
+        <a href="CreateOrder?tourId=${requestScope.tour.id}">order this tour</a>
     </c:if>
     <c:if test="${requestScope.madeOrder}">
         You made order for this tour ✔
