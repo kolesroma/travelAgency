@@ -6,21 +6,34 @@ import com.travel.dao.entity.User;
 import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) {
-        Reflections reflections = new Reflections("com.travel.controller");
-        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(AdminAccess.class);
-        System.out.println(classes);
+        String password = "qwerty";
+        String encryptedPassword = new Main().cryptPassword(password);
 
+        System.out.println("Plain-text password: " + password);
+        System.out.println("Encrypted password using MD5: " + encryptedPassword);
+    }
 
-        for(Class cls: classes) {
-            AdminAccess target = (AdminAccess) cls.getAnnotation(AdminAccess.class);
-            System.out.println(target);
+    private String cryptPassword(String password) {
+        try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(password.getBytes());
+            byte[] bytes = m.digest();
+            StringBuilder s = new StringBuilder();
+            for (byte aByte : bytes) {
+                s.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return s.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
         }
-
     }
 }

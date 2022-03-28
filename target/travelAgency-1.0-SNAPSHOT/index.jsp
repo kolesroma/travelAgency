@@ -6,8 +6,8 @@
 </head>
 <body>
 <form action="Login" method="post">
-    <input type="text" name="login"><br>
-    <input type="password" name="password"><br>
+    <input type="text" name="login" required minlength="1"><br>
+    <input type="password" name="password" required minlength="5"><br>
     <input type="submit" value="LOG IN">
 </form>
 <a href="register.jsp">register</a>

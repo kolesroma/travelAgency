@@ -6,6 +6,8 @@ import com.travel.dao.UserDaoFactory;
 import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,6 @@ public class UserManager {
     public UserManager() {
         this.userDao = UserDaoFactory.getInstance();
     }
-
 
     /**
      * gets user from database if login and password are right
@@ -30,10 +31,10 @@ public class UserManager {
         } catch (DaoException e) {
             return null;
         }
-        if (!user.getPasswordEnc().equals(password)) {
-            return null;
+        if (user.getPasswordEnc().equals(cryptPassword(password))) {
+            return user;
         }
-        return user;
+        return null;
     }
 
     /**
@@ -47,23 +48,43 @@ public class UserManager {
      * @return true if user was registered (therefore all params should be right); false if was not registered
      */
     public boolean register(String login, String password, String name, String surname, String ageSt, String address) {
-        if (password.length() < 5) return false;
-
-        int age = new DataProcessor().parsePositiveInt(ageSt);
         User user = new User();
         user.setLogin(login);
-        user.setPasswordEnc(password);
+        user.setPasswordEnc(cryptPassword(password));
         user.setName(name);
         user.setSurname(surname);
-        user.setAge(age);
+        user.setAge(new DataProcessor().parsePositiveInt(ageSt));
         user.setAddress(address);
-
         try {
             userDao.add(user);
         } catch (DaoException e) {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * crypt password
+     * @param password String with length >= 5
+     * @return encrypted password String;
+     * empty String if password is null or length < 5 that cause constraint passwordEnc with length 0 violation
+     */
+    public String cryptPassword(String password) {
+        if (password == null || password.length() < 5) return "";
+        try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(password.getBytes());
+            byte[] bytes = m.digest();
+            StringBuilder s = new StringBuilder();
+            for (byte aByte : bytes) {
+                s.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return s.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
