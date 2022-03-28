@@ -57,7 +57,7 @@ public class OrderDaoFactory implements OrderDao {
             ps.setInt(1, userId);
             ps.setInt(2, tourId);
             try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) return null;
+                if (!rs.next()) throw new DaoException("cannot get order");
                 order = new Order(rs.getInt("id"),
                         rs.getInt("userId"),
                         rs.getInt("tourId"),

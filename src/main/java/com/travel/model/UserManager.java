@@ -3,7 +3,6 @@ package com.travel.model;
 import com.travel.dao.DaoException;
 import com.travel.dao.UserDao;
 import com.travel.dao.UserDaoFactory;
-import com.travel.dao.entity.Tour;
 import com.travel.dao.entity.User;
 
 import java.security.MessageDigest;
@@ -63,14 +62,13 @@ public class UserManager {
         return true;
     }
 
-
     /**
      * crypt password
      * @param password String with length >= 5
      * @return encrypted password String;
      * empty String if password is null or length < 5 that cause constraint passwordEnc with length 0 violation
      */
-    public String cryptPassword(String password) {
+    private String cryptPassword(String password) {
         if (password == null || password.length() < 5) return "";
         try {
             MessageDigest m = MessageDigest.getInstance("MD5");
@@ -91,14 +89,11 @@ public class UserManager {
      * @return List of users; empty List if exception
      */
     public List<User> getAll() {
-        List<User> users;
         try {
-            users = userDao.getAll();
+            return userDao.getAll();
         } catch (DaoException e) {
-            e.printStackTrace();
             return new ArrayList<>();
         }
-        return users;
     }
 
     /**

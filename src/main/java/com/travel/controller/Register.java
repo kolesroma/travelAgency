@@ -1,9 +1,5 @@
 package com.travel.controller;
 
-import com.travel.dao.UserDao;
-import com.travel.dao.UserDaoFactory;
-import com.travel.dao.entity.User;
-import com.travel.model.AuthorizationException;
 import com.travel.model.DataProcessor;
 import com.travel.model.UserManager;
 

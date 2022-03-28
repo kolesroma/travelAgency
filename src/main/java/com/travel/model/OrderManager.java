@@ -28,14 +28,13 @@ public class OrderManager {
      * says whether the order exists
      * @param userId of this order
      * @param tourId of this order
-     * @return true if exists; false if not exists or exception
+     * @return true if exists; false if not exist or exception
      */
     public boolean isExist(int userId, int tourId) {
         Order order;
         try {
             order = orderDao.getByUserIdTourId(userId, tourId);
         } catch (DaoException e) {
-            e.printStackTrace();
             return false;
         }
         return order != null;

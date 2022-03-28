@@ -17,21 +17,13 @@ import java.io.IOException;
 public class ShowUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUser(req, resp);
-        if (user == null) return;
+        String idSt = req.getParameter("id");
+        int userId = new DataProcessor().parsePositiveInt(idSt);
+        User user = new UserManager().getById(userId);
+        if (new DataProcessor().isNullSendError(user, resp, "there is no user with id " + idSt)) return;
 
         req.setAttribute("user", user);
         req.getRequestDispatcher("WEB-INF/view/userInfo.jsp")
                 .forward(req, resp);
-    }
-
-    private User getUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
-        User user = new UserManager().getById(userId);
-        if (user == null) {
-            resp.sendError(400, "there is no user with id " + userId);
-            return null;
-        }
-        return user;
     }
 }

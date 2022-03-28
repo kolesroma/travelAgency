@@ -1,9 +1,5 @@
 package com.travel.controller;
 
-import com.travel.dao.entity.User;
-import com.travel.model.AuthorizationException;
-import com.travel.model.UserManager;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

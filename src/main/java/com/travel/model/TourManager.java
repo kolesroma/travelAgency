@@ -18,19 +18,17 @@ public class TourManager {
     }
 
     /**
+     * provide a list with number of pageCapacity elements in it
      * @param page should be in possible range in database or List will be empty
      * @return a List with number of pageCapacity elements if page in correct range;
      * empty List if incorrect range
      */
     public List<Tour> getToursOnPage(int page) {
-        List<Tour> tours;
         try {
-            tours = tourDao.getPiece(pageCapacity * (page - 1), pageCapacity);
+            return tourDao.getPiece(pageCapacity * (page - 1), pageCapacity);
         } catch (DaoException e) {
-            e.printStackTrace();
             return new ArrayList<>();
         }
-        return tours;
     }
 
     /**
@@ -65,28 +63,25 @@ public class TourManager {
     }
 
     /**
-     * @return max possible page. if error returns 1
+     * @return max possible page; 1 if error
      */
     public int getMaxPageAllTours() {
-        int maxPage;
         try {
-            maxPage = (int) Math.ceil((double) tourDao.countRowsAllTours() / pageCapacity);
+            return (int) Math.ceil((double) tourDao.countRowsAllTours() / pageCapacity);
         } catch (DaoException e) {
-            e.printStackTrace();
             return 1; // should never happen
         }
-        return maxPage;
     }
 
+    /**
+     * @return max possible page; 1 if error
+     */
     public int getMaxPageFound(HttpServletRequest req) {
-        int maxPage;
         try {
-            maxPage = (int) Math.ceil((double) tourDao.countRowsFound(req) / pageCapacity);
+            return (int) Math.ceil((double) tourDao.countRowsFound(req) / pageCapacity);
         } catch (DaoException e) {
-            e.printStackTrace();
             return 1; // should never happen
         }
-        return maxPage;
     }
 
     /**

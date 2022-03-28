@@ -15,21 +15,13 @@ import java.io.IOException;
 public class BanUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));
-        User user = getUser(req, resp, userId);
-        if (user == null) return;
+        String idSt = req.getParameter("id");
+        int userId = new DataProcessor().parsePositiveInt(idSt);
+        User user = new UserManager().getById(userId);
+        if (new DataProcessor().isNullSendError(user, resp, "there is no user with id " + idSt)) return;
 
         new UserManager().changeBan(user);
 
         resp.sendRedirect("ShowUser?id=" + userId);
-    }
-
-    private User getUser(HttpServletRequest req, HttpServletResponse resp, int userId) throws IOException {
-        User user = new UserManager().getById(userId);
-        if (user == null) {
-            resp.sendError(400, "there is no user with id " + userId);
-            return null;
-        }
-        return user;
     }
 }
