@@ -7,19 +7,18 @@ import java.util.Map;
 
 public class DataProcessor {
     /**
-     * in order to contract take String and try parse to int
-     * @param positiveSt String representation of positive int in range [1; Integer.MAX_VALUE]
-     * @return int in range [-Integer.MIN_VALUE; + Integer.MAX_VALUE] if pageSt is an int representation;
-     * -1 as an exception during the cast
+     * in order to contract take any String and try parse to int
+     * @param positiveSt any String
+     * @return int representation of positiveSt;
+     * -1 if exception during the cast or string is null or empty;
      */
     public int parsePositiveInt(String positiveSt) {
-        int i;
+        if (positiveSt == null || positiveSt.isEmpty()) return -1;
         try {
-            i = Integer.parseInt(positiveSt);
+            return Integer.parseInt(positiveSt);
         } catch (NumberFormatException e) {
             return -1;
         }
-        return i;
     }
 
     /**
@@ -48,6 +47,19 @@ public class DataProcessor {
      */
     public <T> boolean isNullSendError(T t, HttpServletResponse resp, String errorMessage) throws IOException {
         if (t == null) {
+            resp.sendError(400, errorMessage);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * send 400 error and return true if param test is false; otherwise return false
+     * @param errorMessage text on error page
+     * @return true if test is false; false if test is true
+     */
+    public boolean isFalseSendError(boolean test, HttpServletResponse resp, String errorMessage) throws IOException {
+        if (!test) {
             resp.sendError(400, errorMessage);
             return true;
         }

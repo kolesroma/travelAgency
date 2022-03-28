@@ -4,6 +4,7 @@ import com.travel.dao.UserDao;
 import com.travel.dao.UserDaoFactory;
 import com.travel.dao.entity.User;
 import com.travel.model.AuthorizationException;
+import com.travel.model.DataProcessor;
 import com.travel.model.UserManager;
 
 import javax.servlet.ServletException;
@@ -24,13 +25,9 @@ public class Register extends HttpServlet {
         String ageSt = req.getParameter("age");
         String address = req.getParameter("address");
 
-        try {
-            new UserManager().register(login, password, name, surname, ageSt, address);
-        } catch (AuthorizationException e) {
-            e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            return;
-        }
+        boolean registered = new UserManager().register(login, password, name, surname, ageSt, address);
+        if (new DataProcessor().isFalseSendError(registered, resp, "registration error")) return;
+
         resp.sendRedirect("index.jsp");
     }
 }

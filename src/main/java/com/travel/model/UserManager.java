@@ -36,20 +36,20 @@ public class UserManager {
         return user;
     }
 
-    public void register(String login, String password, String name, String surname, String ageSt, String address) throws AuthorizationException {
-        if (login.length() == 0 || password.length() == 0 || name.length() == 0 ||
-                surname.length() == 0 || ageSt.length() == 0 || address.length() == 0) {
-            throw new AuthorizationException("empty field registration");
-        }
+    /**
+     * register user and return status whether user was registered
+     * @param login could be any string; if null of empty return false
+     * @param password could be any string; return false if null or empty or length < 5
+     * @param name could be any string; return false if null or empty
+     * @param surname could be any string; return false if null or empty
+     * @param ageSt could be any string; return false if null or empty or int representation < 0
+     * @param address could be any string; return false if null or empty
+     * @return true if user was registered (therefore all params should be right); false if was not registered
+     */
+    public boolean register(String login, String password, String name, String surname, String ageSt, String address) {
+        if (password.length() < 5) return false;
 
-        int age;
-        try {
-            age = Integer.parseInt(ageSt);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            throw new AuthorizationException("age must be a number", e);
-        }
-
+        int age = new DataProcessor().parsePositiveInt(ageSt);
         User user = new User();
         user.setLogin(login);
         user.setPasswordEnc(password);
@@ -61,9 +61,9 @@ public class UserManager {
         try {
             userDao.add(user);
         } catch (DaoException e) {
-            e.printStackTrace();
-            throw new AuthorizationException("cannot register user, try change a login", e);
+            return false;
         }
+        return true;
     }
 
     /**
