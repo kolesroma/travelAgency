@@ -1,7 +1,6 @@
 package com.travel.controller;
 
 import com.travel.dao.entity.User;
-import com.travel.model.Accessor;
 import com.travel.model.DataProcessor;
 import com.travel.model.ManagerAccess;
 import com.travel.model.UserManager;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @ManagerAccess
 @WebServlet("/ShowUser")

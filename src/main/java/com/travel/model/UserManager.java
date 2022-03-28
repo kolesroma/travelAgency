@@ -16,16 +16,22 @@ public class UserManager {
         this.userDao = UserDaoFactory.getInstance();
     }
 
-    public User login(String login, String password) throws AuthorizationException {
+
+    /**
+     * gets user from database if login and password are right
+     * @param login value that typed user
+     * @param password value that typed user
+     * @return user if login and password are right; null if not found
+     */
+    public User login(String login, String password) {
         User user;
         try {
             user = userDao.getByLogin(login);
         } catch (DaoException e) {
-            e.printStackTrace();
-            throw new AuthorizationException("wrong login or/and password", e);
+            return null;
         }
         if (!user.getPasswordEnc().equals(password)) {
-            throw new AuthorizationException("wrong login or/and password");
+            return null;
         }
         return user;
     }

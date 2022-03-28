@@ -1,8 +1,6 @@
 package com.travel.controller;
 
 import com.travel.dao.entity.Order;
-import com.travel.dao.entity.User;
-import com.travel.model.Accessor;
 import com.travel.model.DataProcessor;
 import com.travel.model.ManagerAccess;
 import com.travel.model.OrderManager;

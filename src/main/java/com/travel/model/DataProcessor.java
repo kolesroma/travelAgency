@@ -1,6 +1,8 @@
 package com.travel.model;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 public class DataProcessor {
@@ -37,6 +39,19 @@ public class DataProcessor {
             }
         }
         return "ShowFound?" + sb.toString();
+    }
+
+    /**
+     * send 400 error and return true if param t is null; otherwise return false
+     * @param errorMessage text on error page
+     * @return true if t null; false if t not null
+     */
+    public <T> boolean isNullSendError(T t, HttpServletResponse resp, String errorMessage) throws IOException {
+        if (t == null) {
+            resp.sendError(400, errorMessage);
+            return true;
+        }
+        return false;
     }
 
 }

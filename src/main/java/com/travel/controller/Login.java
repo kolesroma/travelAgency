@@ -1,7 +1,7 @@
 package com.travel.controller;
 
 import com.travel.dao.entity.User;
-import com.travel.model.AuthorizationException;
+import com.travel.model.DataProcessor;
 import com.travel.model.UserManager;
 
 import javax.servlet.ServletException;
@@ -18,15 +18,9 @@ public class Login extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        User user;
-        try {
-            user = new UserManager().login(login, password);
-        } catch (AuthorizationException e) {
-            e.printStackTrace();
-            // send redirect
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-            return;
-        }
+        User user = new UserManager().login(login, password);
+        if (new DataProcessor().isNullSendError(user, resp, "error authorization")) return;
+
         req.getSession().setAttribute("loggedUser", user);
         resp.sendRedirect("home.jsp");
     }
