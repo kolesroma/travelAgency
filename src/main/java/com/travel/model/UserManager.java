@@ -4,6 +4,7 @@ import com.travel.dao.DaoException;
 import com.travel.dao.UserDao;
 import com.travel.dao.UserDaoFactory;
 import com.travel.dao.entity.User;
+import org.apache.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
+    final static Logger LOGGER = Logger.getLogger(UserManager.class);
+
     private final UserDao userDao;
 
     public UserManager() {
@@ -28,12 +31,15 @@ public class UserManager {
         try {
             user = userDao.getByLogin(login);
         } catch (DaoException e) {
+            LOGGER.debug("user cannot log in: " + e.getMessage());
             return null;
         }
-        if (user.getPasswordEnc().equals(cryptPassword(password))) {
-            return user;
+        if (!user.getPasswordEnc().equals(cryptPassword(password))) {
+            LOGGER.debug(login + " cannot log in, wrong password");
+            return null;
         }
-        return null;
+        LOGGER.debug("successfully logged in " + user);
+        return user;
     }
 
     /**
@@ -57,8 +63,10 @@ public class UserManager {
         try {
             userDao.add(user);
         } catch (DaoException e) {
+            LOGGER.debug("cannot register user with parameters: " + user + "\n\t" + e.getCause().getMessage());
             return false;
         }
+        LOGGER.debug("successfully registered " + user);
         return true;
     }
 
@@ -80,7 +88,7 @@ public class UserManager {
             }
             return s.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            LOGGER.error("cannot crypt password" + "\n\t" + e.getMessage());
             return null;
         }
     }
@@ -92,6 +100,7 @@ public class UserManager {
         try {
             return userDao.getAll();
         } catch (DaoException e) {
+            LOGGER.debug("got empty user list");
             return new ArrayList<>();
         }
     }
@@ -100,14 +109,12 @@ public class UserManager {
      * @return User with id; null if not found
      */
     public User getById(int id) {
-        User user;
         try {
-            user = userDao.getById(id);
+            return userDao.getById(id);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("got user null" + "\n\t" + e.getMessage());
             return null;
         }
-        return user;
     }
 
     /**
@@ -118,8 +125,9 @@ public class UserManager {
         user.setBanned(!user.isBanned());
         try {
             userDao.update(user);
+            LOGGER.debug("successfully changed ban for user " + user);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("cannot change ban for user " + user + "\n\t" + e.getMessage());
         }
     }
 }

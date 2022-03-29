@@ -1,12 +1,15 @@
 package com.travel.dao;
 
 import com.travel.dao.entity.User;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoFactory implements UserDao {
+    final static Logger LOGGER = Logger.getLogger(UserDaoFactory.class);
+
     static final String URL = "jdbc:mysql://localhost:3306?" +
             "autoReconnect=true&" +
             "allowPublicKeyRetrieval=true&" +
@@ -28,7 +31,6 @@ public class UserDaoFactory implements UserDao {
     public User getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.users where id = ?";
         User user;
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, id);
@@ -45,10 +47,9 @@ public class UserDaoFactory implements UserDao {
                         rs.getBoolean("isBanned"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get user", e);
         }
-
         return user;
     }
 
@@ -56,7 +57,6 @@ public class UserDaoFactory implements UserDao {
     public User getByLogin(String login) throws DaoException {
         final String SQL = "select * from travelAgency.users where login = ?";
         User user;
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, login);
@@ -73,10 +73,9 @@ public class UserDaoFactory implements UserDao {
                         rs.getBoolean("isBanned"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get user", e);
         }
-
         return user;
     }
 
@@ -84,7 +83,6 @@ public class UserDaoFactory implements UserDao {
     public List<User> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.users";
         List<User> users = new ArrayList<>();
-
         try (Connection con = DriverManager.getConnection(URL);
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
@@ -100,18 +98,15 @@ public class UserDaoFactory implements UserDao {
                         rs.getBoolean("isBanned")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get users", e);
         }
-
         return users;
     }
-
 
     @Override
     public void add(User user) throws DaoException {
         final String SQL = "insert into travelAgency.users values (default, ?, ?, ?, ?, ?, ?, default, default)";
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, user.getLogin());
@@ -122,7 +117,7 @@ public class UserDaoFactory implements UserDao {
             ps.setString(6, user.getAddress());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot add user", e);
         }
     }
@@ -130,13 +125,12 @@ public class UserDaoFactory implements UserDao {
     @Override
     public void delete(User user) throws DaoException {
         final String SQL = "delete from travelAgency.users where id = ?";
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, user.getId());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot delete user", e);
         }
     }
@@ -145,7 +139,6 @@ public class UserDaoFactory implements UserDao {
     public void update(User user) throws DaoException {
         final String SQL = "update travelAgency.users set login = ?, passwordEnc = ?, name = ?, surname = ?," +
                 "age = ?, address = ?, role = ? ,isBanned = ? where id = ?";
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, user.getLogin());
@@ -160,7 +153,7 @@ public class UserDaoFactory implements UserDao {
             int rows = ps.executeUpdate();
             if (rows == 0) throw new DaoException("there is no user with id " + user.getId());
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot update user", e);
         }
     }

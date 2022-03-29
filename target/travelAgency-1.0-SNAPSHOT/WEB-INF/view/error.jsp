@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>error</title>
+    <title>Error</title>
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/error.css">
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

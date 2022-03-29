@@ -1,19 +1,26 @@
 package com.travel.model;
 
-import com.travel.controller.BanUser;
-import com.travel.dao.*;
-import com.travel.dao.entity.User;
-import org.reflections.Reflections;
-
-import java.lang.annotation.Annotation;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Set;
+import org.apache.log4j.Logger;
 
 public class Main {
+    final static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
+
+        Main obj = new Main();
+
+        try{
+            obj.divide();
+        }catch(ArithmeticException ex){
+            logger.error("Sorry, something wrong!", ex);
+        }
+
+
+    }
+
+    private void divide(){
+
+        int i = 10 /0;
 
     }
 }

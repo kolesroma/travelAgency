@@ -4,12 +4,15 @@ import com.travel.dao.DaoException;
 import com.travel.dao.TourDao;
 import com.travel.dao.TourDaoFactory;
 import com.travel.dao.entity.Tour;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TourManager {
+    final static Logger LOGGER = Logger.getLogger(TourManager.class);
+
     private final TourDao tourDao;
     private final int pageCapacity = 4;
 
@@ -27,6 +30,7 @@ public class TourManager {
         try {
             return tourDao.getPiece(pageCapacity * (page - 1), pageCapacity);
         } catch (DaoException e) {
+            LOGGER.debug("got empty user list" + "\n\t" + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -38,14 +42,12 @@ public class TourManager {
      * empty List if incorrect range
      */
     public List<Tour> getToursOnPage(HttpServletRequest req, int page) {
-        List<Tour> tours;
         try {
-            tours = tourDao.getPiece(req, pageCapacity * (page - 1), pageCapacity);
+            return tourDao.getPiece(req, pageCapacity * (page - 1), pageCapacity);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("got empty user list" + "\n\t" + e.getMessage());
             return new ArrayList<>();
         }
-        return tours;
     }
 
     /**
@@ -69,6 +71,7 @@ public class TourManager {
         try {
             return (int) Math.ceil((double) tourDao.countRowsAllTours() / pageCapacity);
         } catch (DaoException e) {
+            LOGGER.debug("cannot get max page" + "\n\t" + e.getMessage());
             return 1; // should never happen
         }
     }
@@ -80,6 +83,7 @@ public class TourManager {
         try {
             return (int) Math.ceil((double) tourDao.countRowsFound(req) / pageCapacity);
         } catch (DaoException e) {
+            LOGGER.debug("cannot get max page" + "\n\t" + e.getMessage());
             return 1; // should never happen
         }
     }
@@ -88,14 +92,12 @@ public class TourManager {
      * @return Tour with id as a parameter; null if Tour not found
      */
     public Tour getTourById(int id) {
-        Tour tour;
         try {
-            tour = tourDao.getById(id);
+            return tourDao.getById(id);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("got null tour" + "\n\t" + e.getMessage());
             return null;
         }
-        return tour;
     }
 
     /**
@@ -106,8 +108,9 @@ public class TourManager {
         tour.setHot(!tour.isHot());
         try {
             tourDao.update(tour);
+            LOGGER.debug("successfully changed hot for tour " + tour);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("cannot change hot for tour " + tour + "\n\t" + e.getMessage());
         }
     }
 
@@ -117,9 +120,10 @@ public class TourManager {
         try {
             tourDao.add(tour);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.debug("cannot add tour with parameters " + tour);
             return false;
         }
+        LOGGER.debug("successfully added tour " + tour);
         return true;
     }
 
@@ -148,8 +152,10 @@ public class TourManager {
         try {
             tourDao.update(tour);
         } catch (DaoException e) {
+            LOGGER.debug("cannot update tour with parameters " + tour);
             return false;
         }
+        LOGGER.debug("successfully updated tour with parameters " + tour);
         return true;
     }
 }

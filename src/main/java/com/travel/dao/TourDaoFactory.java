@@ -1,6 +1,7 @@
 package com.travel.dao;
 
 import com.travel.dao.entity.Tour;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TourDaoFactory implements TourDao {
+    final static Logger LOGGER = Logger.getLogger(TourDaoFactory.class);
+
     static final String URL = "jdbc:mysql://localhost:3306?" +
             "autoReconnect=true&" +
             "allowPublicKeyRetrieval=true&" +
@@ -42,7 +45,7 @@ public class TourDaoFactory implements TourDao {
                         rs.getInt("hotelStars"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get tour", e);
         }
         return tour;
@@ -64,7 +67,7 @@ public class TourDaoFactory implements TourDao {
                         rs.getInt("hotelStars")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get tours", e);
         }
         return tours;
@@ -87,7 +90,6 @@ public class TourDaoFactory implements TourDao {
 
     private List<Tour> getTours(int skip, int show, String SQL) throws DaoException {
         List<Tour> tours = new ArrayList<>();
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, skip);
@@ -103,7 +105,7 @@ public class TourDaoFactory implements TourDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot get tours", e);
         }
         return tours;
@@ -167,7 +169,7 @@ public class TourDaoFactory implements TourDao {
             ps.setInt(5, tour.getHotelStars());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot add tour", e);
         }
     }
@@ -193,7 +195,7 @@ public class TourDaoFactory implements TourDao {
             rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot count rows", e);
         }
     }
@@ -201,13 +203,12 @@ public class TourDaoFactory implements TourDao {
     @Override
     public void delete(Tour tour) throws DaoException {
         final String SQL = "delete from travelAgency.tours where id = ?";
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tour.getId());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error in database", e);
             throw new DaoException("cannot delete tour", e);
         }
     }
@@ -216,7 +217,6 @@ public class TourDaoFactory implements TourDao {
     public void update(Tour tour) throws DaoException {
         final String SQL = "update travelAgency.tours " +
                 "set price = ?, isHot = ?, groupSize = ?, type = ?, hotelStars = ? where id = ?";
-
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tour.getPrice());
@@ -228,8 +228,8 @@ public class TourDaoFactory implements TourDao {
             int rows = ps.executeUpdate();
             if (rows == 0) throw new DaoException("there is no tour with id " + tour.getId());
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DaoException("cannot update tours", e);
+            LOGGER.error("error in database", e);
+            throw new DaoException("cannot update tour", e);
         }
     }
 }
