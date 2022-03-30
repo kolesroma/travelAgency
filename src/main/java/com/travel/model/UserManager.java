@@ -88,7 +88,7 @@ public class UserManager {
             }
             return s.toString();
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("cannot crypt password" + "\n\t" + e.getMessage());
+            LOGGER.warn("cannot crypt password" + "\n\t" + e.getMessage());
             return null;
         }
     }

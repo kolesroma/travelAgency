@@ -7,20 +7,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Main obj = new Main();
 
-        try{
-            obj.divide();
-        }catch(ArithmeticException ex){
-            logger.error("Sorry, something wrong!", ex);
-        }
+        logger.debug("Some info");
+        logger.error("Sorry, something wrong!");
 
-
-    }
-
-    private void divide(){
-
-        int i = 10 /0;
 
     }
 }

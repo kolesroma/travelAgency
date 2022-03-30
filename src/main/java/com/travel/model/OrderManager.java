@@ -39,7 +39,7 @@ public class OrderManager {
         try {
             order = orderDao.getByUserIdTourId(userId, tourId);
         } catch (DaoException e) {
-            LOGGER.debug("not exists order with userId " + userId + " and tourId " + tourId + "\n\t" + e.getMessage());
+            LOGGER.debug("user #" + userId + " did not registered in tour#" + tourId + "\n\t" + e.getMessage());
             return false;
         }
         return order != null;
