@@ -15,6 +15,13 @@ import java.io.IOException;
 
 @WebServlet("/ShowTour")
 public class ShowTour extends HttpServlet {
+    /**
+     * set req params tour and madeOrder;
+     * show current tour on page;
+     * get user from session (unregistered user provokes NPE on this page)
+     * @param req should contain parameter id and have attribute loggedUser in session
+     * @param resp send error if bad req params; send forward to tours.jsp if good
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int tourId = new DataProcessor().parsePositiveInt(req.getParameter("id"));

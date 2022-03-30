@@ -13,6 +13,11 @@ import java.io.IOException;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
+    /**
+     * set attribute loggedUser
+     * @param req should contain parameters login and password
+     * @param resp send error if bad req params; send redirect to home.jsp if logged in
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");

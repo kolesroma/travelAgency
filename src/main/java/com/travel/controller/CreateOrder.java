@@ -15,23 +15,23 @@ import java.io.IOException;
 
 @WebServlet("/CreateOrder")
 public class CreateOrder extends HttpServlet {
+    /**
+     * register current tour for this user;
+     * get user from session (unregistered user provokes NPE on this page)
+     * @param req should contain parameter tourId and have attribute loggedUser in session
+     * @param resp send error if bad req params; send redirect to home.jsp if created order
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();
+
         String tourIdSt = req.getParameter("tourId");
         int tourId = new DataProcessor().parsePositiveInt(tourIdSt);
-
         Tour tour = new TourManager().getTourById(tourId);
-        if (tour == null) {
-            resp.sendError(400, "there is no tour with id " + tourIdSt);
-            return;
-        }
+        if (new DataProcessor().isNullSendError(tour, resp, "there is no tour with id " + tourIdSt)) return;
 
         boolean added = new OrderManager().registerOrder(userId, tourId);
-        if (!added) {
-            resp.sendError(400, "order already registered");
-            return;
-        }
+        if (new DataProcessor().isFalseSendError(added, resp, "order already registered")) return;
 
         resp.sendRedirect("home.jsp");
     }

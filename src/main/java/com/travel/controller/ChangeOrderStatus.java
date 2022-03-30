@@ -15,27 +15,23 @@ import java.io.IOException;
 @ManagerAccess
 @WebServlet("/ChangeOrderStatus")
 public class ChangeOrderStatus extends HttpServlet {
+    /**
+     * change status for oder in database
+     * @param req should contain parameter orderId
+     * @param resp send error if bad req params; send redirect to ShowUserOrders with same id if changed status
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int orderId = new DataProcessor().parsePositiveInt(req.getParameter("orderId"));
+        String orderIdSt = req.getParameter("orderId");
+        int orderId = new DataProcessor().parsePositiveInt(orderIdSt);
         Order order = new OrderManager().getById(orderId);
+        if (new DataProcessor().isNullSendError(order, resp, "there is no order with id " + orderIdSt)) return;
 
-        if (order == null) {
-            resp.sendError(400, "there is no order with id " + orderId);
-            return;
-        }
-
-        if (!isUpdated(req, order)) {
-            resp.sendError(400, "there is no order with id " + orderId);
-            return;
-        }
-
-        resp.sendRedirect("ShowUserOrders?id=" + order.getUserId());
-    }
-
-    private boolean isUpdated(HttpServletRequest req, Order order) {
         String status = req.getParameter("status");
         order.setStatus(status);
-        return new OrderManager().update(order);
+        boolean updated = new OrderManager().update(order);
+        if (new DataProcessor().isFalseSendError(updated, resp, "there is no order with id " + orderIdSt)) return;
+
+        resp.sendRedirect("ShowUserOrders?id=" + order.getUserId());
     }
 }

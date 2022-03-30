@@ -12,6 +12,11 @@ import java.io.IOException;
 
 @WebServlet("/Register")
 public class Register extends HttpServlet {
+    /**
+     * add a new user to database
+     * @param req should contain parameters login and password, name, surname, age and address
+     * @param resp send error if bad req params; send redirect to index.jsp if registered
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");

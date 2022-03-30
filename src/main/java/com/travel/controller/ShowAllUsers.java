@@ -15,6 +15,11 @@ import java.util.List;
 @ManagerAccess
 @WebServlet("/ShowAllUsers")
 public class ShowAllUsers extends HttpServlet {
+    /**
+     * set req param users
+     * show all users
+     * @param resp include allUsers.jsp (no users in list if exception)
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<User> users = new UserManager().getAll();

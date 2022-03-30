@@ -14,23 +14,20 @@ import java.io.IOException;
 @ManagerAccess
 @WebServlet("/SetHotTour")
 public class SetHotTour extends HttpServlet {
+    /**
+     * change hot for tour with tourId
+     * @param req should contain parameter tourId
+     * @param resp send error if bad req params; send redirect to ShowTour if changed
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int tourId = new DataProcessor().parsePositiveInt(req.getParameter("tourId"));
-        Tour tour = getTour(resp, tourId);
-        if (tour == null) return;
+        Tour tour = new TourManager().getTourById(tourId);
+        if (new DataProcessor().isNullSendError(tour, resp, "this tour is not exist")) return;
 
-        new TourManager().changeHot(tour);
+        boolean changed = new TourManager().changeHot(tour);
+        if (new DataProcessor().isFalseSendError(changed,resp, "lost connection with database, try again later")) return;
 
         resp.sendRedirect("ShowTour?id=" + tourId);
-    }
-
-    private Tour getTour(HttpServletResponse resp, int tourId) throws IOException {
-        Tour tour = new TourManager().getTourById(tourId);
-        if (tour == null) {
-            resp.sendError(400, "this tour is not exist");
-            return null;
-        }
-        return tour;
     }
 }

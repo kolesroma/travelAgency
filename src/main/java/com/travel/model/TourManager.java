@@ -103,20 +103,25 @@ public class TourManager {
     /**
      * set isHot true if isHot was false;
      * set isHot false if isHot was true
+     * @return true if changed hot; false if not
      */
-    public void changeHot(Tour tour) {
+    public boolean changeHot(Tour tour) {
         tour.setHot(!tour.isHot());
         try {
             tourDao.update(tour);
             LOGGER.debug("successfully changed hot for tour " + tour);
+            return true;
         } catch (DaoException e) {
             LOGGER.debug("cannot change hot for tour " + tour + "\n\t" + e.getMessage());
+            return false;
         }
     }
 
 
-    public boolean addTour(HttpServletRequest req) {
-        Tour tour = prepareTour(req);
+    /**
+     * @return true if added; false if not added
+     */
+    public boolean addTour(Tour tour) {
         try {
             tourDao.add(tour);
         } catch (DaoException e) {
@@ -128,9 +133,9 @@ public class TourManager {
     }
 
     /**
-     * gets params from req, processes them and create a new Tour with such information
+     * gets params from req, processes them and returns a new Tour with such information
      * @param req should include params price, isHot, groupSize, type and hotelStars
-     * @return Tour with such information (except setting id)
+     * @return Tour (never null) with such information (except setting id)
      */
     public Tour prepareTour(HttpServletRequest req) {
         int price = new DataProcessor().parsePositiveInt(req.getParameter("price"));
@@ -148,6 +153,9 @@ public class TourManager {
         return tour;
     }
 
+    /**
+     * @return true if updated; false if not
+     */
     public boolean update(Tour tour) {
         try {
             tourDao.update(tour);

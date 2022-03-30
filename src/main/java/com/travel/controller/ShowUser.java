@@ -15,6 +15,12 @@ import java.io.IOException;
 @ManagerAccess
 @WebServlet("/ShowUser")
 public class ShowUser extends HttpServlet {
+    /**
+     * set req param user;
+     * show current user on page;
+     * @param req should contain parameter id (userId)
+     * @param resp send error if bad req params; send forward to userInfo.jsp if good
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idSt = req.getParameter("id");

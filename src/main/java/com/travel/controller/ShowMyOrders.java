@@ -16,6 +16,12 @@ import java.util.List;
 
 @WebServlet("/ShowMyOrders")
 public class ShowMyOrders extends HttpServlet {
+    /**
+     * set req param orders;
+     * get user from session (unregistered user provokes NPE on this page)
+     * @param req should have attribute loggedUser in session
+     * @param resp send forward to orders.jsp; orders could be an empty list if no order for this user
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int userId = ((User) req.getSession().getAttribute("loggedUser")).getId();

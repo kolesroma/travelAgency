@@ -17,6 +17,13 @@ public class OrderManager {
         this.orderDao = OrderDaoFactory.getInstance();
     }
 
+    /**
+     * pair of userId and tourId are unique;
+     * add order to database if there is no such order yet; otherwise do not add
+     * @param userId id of user
+     * @param tourId id of tour
+     * @return true if order was registered; false if not
+     */
     public boolean registerOrder(int userId, int tourId) {
         try {
             orderDao.add(userId, tourId);
@@ -70,6 +77,9 @@ public class OrderManager {
         }
     }
 
+    /**
+     * @return true if updated; false if not updated
+     */
     public boolean update(Order order) {
         try {
             orderDao.update(order);

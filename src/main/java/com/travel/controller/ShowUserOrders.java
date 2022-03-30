@@ -16,6 +16,12 @@ import java.util.List;
 @ManagerAccess
 @WebServlet("/ShowUserOrders")
 public class ShowUserOrders extends HttpServlet {
+    /**
+     * set req param orders;
+     * show orders of current user on page;
+     * @param req should contain parameter id (userId)
+     * @param resp send forward to orders.jsp; orders could be an empty list if no order for this user
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int userId = new DataProcessor().parsePositiveInt(req.getParameter("id"));

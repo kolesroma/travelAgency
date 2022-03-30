@@ -121,13 +121,15 @@ public class UserManager {
      * set isBanned true if isBanned was false;
      * set isBanned false if isBanned was true
      */
-    public void changeBan(User user) {
+    public boolean changeBan(User user) {
         user.setBanned(!user.isBanned());
         try {
             userDao.update(user);
             LOGGER.debug("successfully changed ban for user " + user);
+            return true;
         } catch (DaoException e) {
             LOGGER.debug("cannot change ban for user " + user + "\n\t" + e.getMessage());
+            return false;
         }
     }
 }

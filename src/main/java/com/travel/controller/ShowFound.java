@@ -14,6 +14,12 @@ import java.util.List;
 
 @WebServlet("/ShowFound")
 public class ShowFound extends HttpServlet {
+    /**
+     * set req params tours, page, maxPage and path;
+     * show tours on some page by criteria
+     * @param req should contain parameter page
+     * @param resp send forward to allTours.jsp
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int page = new DataProcessor().parsePositiveInt(req.getParameter("page"));

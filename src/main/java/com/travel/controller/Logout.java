@@ -9,6 +9,11 @@ import java.io.IOException;
 
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
+    /**
+     * invalidates session for current user
+     * @param req clear session, in particular parameter loggedUser
+     * @param resp send redirect to index.jsp
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
