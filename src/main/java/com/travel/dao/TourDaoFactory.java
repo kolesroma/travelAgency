@@ -141,7 +141,7 @@ public class TourDaoFactory implements TourDao {
             Integer.parseInt(groupFrom);
             Integer.parseInt(groupTo);
         } catch (NumberFormatException e) {
-            groupFlag= false;
+            groupFlag = false;
         }
 
         StringBuilder sb = new StringBuilder("select * from travelAgency.tours where true ");
@@ -200,13 +200,19 @@ public class TourDaoFactory implements TourDao {
         }
     }
 
+    /**
+     * delete tour with id which has no orders (or orders is canceled)
+     */
     @Override
-    public void delete(Tour tour) throws DaoException {
-        final String SQL = "delete from travelAgency.tours where id = ?";
+    public void deleteIfNoOrders(int tourId) throws DaoException {
+        final String SQL = "delete from travelAgency.tours where id = ? " +
+                "and not exists(select * from travelAgency.orders where tourId = ? and status != 'canceled')";
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
-            ps.setInt(1, tour.getId());
-            ps.execute();
+            ps.setInt(1, tourId);
+            ps.setInt(2, tourId);
+            int rows = ps.executeUpdate();
+            if (rows == 0) throw new DaoException("cannot delete tour, there is orders");
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot delete tour", e);

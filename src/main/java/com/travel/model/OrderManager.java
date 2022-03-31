@@ -2,7 +2,6 @@ package com.travel.model;
 
 import com.travel.dao.*;
 import com.travel.dao.entity.Order;
-import com.travel.dao.entity.User;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -57,7 +56,9 @@ public class OrderManager {
      */
     public List<Order> getOrdersByUserId(int userId) {
         try {
-            return orderDao.getUserOrders(userId);
+            List<Order> orders = orderDao.getUserOrders(userId);
+            LOGGER.debug("got orders for user#" + userId + " : " + orders);
+            return orders;
         } catch (DaoException e) {
             LOGGER.debug("cannot get orders with userId " + userId + "\n\t got empty List" + "\n\t" + e.getMessage());
             return new ArrayList<>();

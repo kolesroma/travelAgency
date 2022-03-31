@@ -58,6 +58,10 @@
         <input type="hidden" name="tourId" value="${requestScope.tour.id}">
         <input type="submit" value="update tour">
     </form>
+    <form action="DeleteTour" method="post">
+        <input type="hidden" name="id" value="${requestScope.tour.id}">
+        <input type="submit" value="delete tour">
+    </form>
 </c:if>
 <%--admin section--%>
 </body>

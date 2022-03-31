@@ -20,7 +20,7 @@ public interface TourDao {
 
     int countRowsFound(HttpServletRequest req) throws DaoException;
 
-    void delete(Tour tour) throws DaoException;
+    void deleteIfNoOrders(int tourId) throws DaoException;
 
     void update(Tour tour) throws DaoException;
 }

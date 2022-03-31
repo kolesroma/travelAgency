@@ -124,6 +124,7 @@ public class TourManager {
     public boolean addTour(Tour tour) {
         try {
             tourDao.add(tour);
+            LOGGER.debug("added tour " + tour);
         } catch (DaoException e) {
             LOGGER.debug("cannot add tour with parameters " + tour);
             return false;
@@ -159,11 +160,27 @@ public class TourManager {
     public boolean update(Tour tour) {
         try {
             tourDao.update(tour);
+            LOGGER.debug("updated tour " + tour);
         } catch (DaoException e) {
             LOGGER.debug("cannot update tour with parameters " + tour);
             return false;
         }
         LOGGER.debug("successfully updated tour with parameters " + tour);
         return true;
+    }
+
+    /**
+     * delete tour from database with id if no active orders for it
+     * @return true if deleted; false in fot
+     */
+    public boolean deleteIfNoOrders(int tourId) {
+        try {
+            tourDao.deleteIfNoOrders(tourId);
+            LOGGER.debug("deleted tour#" + tourId);
+            return true;
+        } catch (DaoException e) {
+            LOGGER.debug("cannot delete tour#" + tourId + " with orders");
+            return false;
+        }
     }
 }

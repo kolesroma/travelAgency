@@ -25,6 +25,7 @@
         <url-pattern>/CreateTour</url-pattern>
         <url-pattern>/UpdateTour</url-pattern>
         <url-pattern>/createTour.jsp</url-pattern>
+        <url-pattern>/DeleteTour</url-pattern>
     </filter-mapping>
 
 
