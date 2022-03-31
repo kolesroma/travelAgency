@@ -132,4 +132,17 @@ public class UserManager {
             return false;
         }
     }
+
+    /**
+     * @return List of halfUsers which have only id, login and in surname contains order status;
+     * could be an empty List
+     */
+    public List<User> getUsersByTourId(int tourId) {
+        try {
+            return userDao.getTourUsers(tourId);
+        } catch (DaoException e) {
+            LOGGER.debug("cannot get users with tourId " + tourId + "\n\t got empty List" + "\n\t" + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
 }

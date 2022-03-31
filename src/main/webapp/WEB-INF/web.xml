@@ -16,6 +16,7 @@
         <url-pattern>/ShowAllUsers</url-pattern>
         <url-pattern>/ShowUser</url-pattern>
         <url-pattern>/ShowUserOrders</url-pattern>
+        <url-pattern>/ShowTourUsers</url-pattern>
     </filter-mapping>
 
     <filter-mapping>

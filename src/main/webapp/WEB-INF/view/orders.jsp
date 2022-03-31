@@ -17,9 +17,10 @@
     <c:forEach var="order" items="${requestScope.orders}">
         <div>
             order number: ${order.id}
+            tour#${order.tourId}
             status: ${order.status}
             discount: ${order.discount}%
-            <a href="ShowTour?id=${order.tourId}">review your order</a>
+            <a href="ShowTour?id=${order.tourId}">review tour</a>
         </div>
         <%--manager section--%>
         <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">

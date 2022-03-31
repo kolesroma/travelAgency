@@ -1,5 +1,6 @@
 package com.travel.dao;
 
+import com.travel.dao.entity.Order;
 import com.travel.dao.entity.User;
 import org.apache.log4j.Logger;
 
@@ -96,6 +97,30 @@ public class UserDaoFactory implements UserDao {
                         rs.getString("address"),
                         rs.getString("role"),
                         rs.getBoolean("isBanned")));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("error in database", e);
+            throw new DaoException("cannot get users", e);
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> getTourUsers(int tourId) throws DaoException{
+        final String SQL = "select u.id, u.login, status from travelAgency.orders " +
+                "join travelAgency.users u on u.id = orders.userId where tourId = ?";
+        List<User> users = new ArrayList<>();
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, tourId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    User halfUser = new User();
+                    halfUser.setId(rs.getInt("u.id"));
+                    halfUser.setLogin(rs.getString("u.login"));
+                    halfUser.setSurname(rs.getString("status"));
+                    users.add(halfUser);
+                }
             }
         } catch (SQLException e) {
             LOGGER.error("error in database", e);

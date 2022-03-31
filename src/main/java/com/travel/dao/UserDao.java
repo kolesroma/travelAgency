@@ -11,6 +11,8 @@ public interface UserDao {
 
     List<User> getAll() throws DaoException;
 
+    List<User> getTourUsers(int tourId) throws DaoException;
+
     void add(User user) throws DaoException;
 
     void delete(User user) throws DaoException;

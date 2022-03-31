@@ -59,7 +59,7 @@ public class OrderManager {
         try {
             return orderDao.getUserOrders(userId);
         } catch (DaoException e) {
-            LOGGER.debug("cannot get order with userId " + userId + "\n\t got empty List" + "\n\t" + e.getMessage());
+            LOGGER.debug("cannot get orders with userId " + userId + "\n\t got empty List" + "\n\t" + e.getMessage());
             return new ArrayList<>();
         }
     }
