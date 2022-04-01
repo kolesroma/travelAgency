@@ -2,6 +2,7 @@ package com.travel.model;
 
 import com.travel.dao.*;
 import com.travel.dao.entity.Order;
+import com.travel.dao.entity.Tour;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -52,6 +53,21 @@ public class OrderManager {
     }
 
     /**
+     * gets order by userId and tourId - always only one
+     * @param userId should be in database or null
+     * @param tourId should be in database or null
+     * @return order with tourId and userId if in database; null if not
+     */
+    public Order getByUserIdTourId(int userId, int tourId) {
+        try {
+            return orderDao.getByUserIdTourId(userId, tourId);
+        } catch (DaoException e) {
+            LOGGER.debug("user #" + userId + " did not registered in tour#" + tourId + "\n\t" + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
      * @return List of user orders; could be an empty List
      */
     public List<Order> getOrdersByUserId(int userId) {
@@ -90,5 +106,24 @@ public class OrderManager {
         }
         LOGGER.debug("successfully updated order " + order);
         return true;
+    }
+
+    /**
+     * set discount for order in database
+     * @param order got order from database
+     * @param discount any int (if not in range 0;100 return false)
+     * @return true if changed; false if not changed or discount not ir range 0;100
+     */
+    public boolean changeDiscount(Order order, int discount) {
+        if (discount < 0 || discount > 100) return false;
+        order.setDiscount(discount);
+        try {
+            orderDao.update(order);
+            LOGGER.debug("successfully updated order " + order);
+            return true;
+        } catch (DaoException e) {
+            LOGGER.debug("cannot update order " + order);
+            return false;
+        }
     }
 }

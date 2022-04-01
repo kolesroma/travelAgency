@@ -29,8 +29,8 @@
     </c:if>
 </div>
 <%--manager section--%>
-<hr>
 <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
+    <hr>
     <form action="SetHotTour" method="post">
         <input type="hidden" name="tourId" value="${requestScope.tour.id}">
         <input type="submit" value="change hot">

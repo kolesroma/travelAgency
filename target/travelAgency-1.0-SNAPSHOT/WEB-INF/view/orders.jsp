@@ -34,6 +34,11 @@
                 <input type="hidden" name="orderId" value="${order.id}">
                 <input type="submit" value="change status">
             </form>
+            <form action="SetOrderDiscount" method="post">
+                discount: <input name="discount" type="number" min="0" step="1" max="100">
+                <input type="hidden" name="id" value="${order.id}">
+                <input type="submit" value="set discount">
+            </form>
         </c:if>
         <%--manager section--%>
     </c:forEach>
