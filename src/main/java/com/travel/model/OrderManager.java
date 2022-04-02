@@ -6,7 +6,9 @@ import com.travel.dao.entity.Tour;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderManager {
     final static Logger LOGGER = Logger.getLogger(OrderManager.class);
@@ -125,5 +127,18 @@ public class OrderManager {
             LOGGER.debug("cannot update order " + order);
             return false;
         }
+    }
+
+    /**
+     * @return Map of order and its tour
+     */
+    public Map<Order, Tour> getOrderTourMap(int userId) {
+        List<Order> orders = new OrderManager().getOrdersByUserId(userId);
+
+        Map<Order, Tour> orderTour = new HashMap<>();
+        for (Order order : orders) {
+            orderTour.put(order, new TourManager().getTourById(order.getTourId()));
+        }
+        return orderTour;
     }
 }

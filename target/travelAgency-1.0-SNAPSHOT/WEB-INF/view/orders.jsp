@@ -12,14 +12,23 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="sidebar.jspf"%>
+<%@include file="sidebar.jspf" %>
 <div>
-    <c:forEach var="order" items="${requestScope.orders}">
+    <c:forEach var="entry" items="${requestScope.orderTour}">
+        <c:set var="order" value="${entry.key}"/>
+        <c:set var="tour" value="${entry.value}"/>
         <div>
-            order number: ${order.id}
-            tour#${order.tourId}
-            status: ${order.status}
-            discount: ${order.discount}%
+            <img src="img/hotel.jpg" alt="hotel"> <br>
+            order number: ${order.id}<br>
+            status: ${order.status}<br>
+            <p>TOUR #${tour.id}</p>
+            <p>hot: ${tour.hot}</p>
+            <p>type: ${tour.type}</p>
+            <p>size group: ${tour.groupSize}</p>
+            <p>hotel: ${tour.hotelStars}*</p>
+            full price: ${tour.price}<br>
+            discount: ${order.discount}%<br>
+            your price: ${tour.price * (100 - order.discount) / 100}<br>
             <a href="ShowTour?id=${order.tourId}">review tour</a>
         </div>
         <%--manager section--%>
@@ -40,6 +49,7 @@
                 <input type="submit" value="set discount">
             </form>
         </c:if>
+        <br>
         <%--manager section--%>
     </c:forEach>
 </div>
