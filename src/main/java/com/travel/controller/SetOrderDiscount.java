@@ -21,7 +21,7 @@ public class SetOrderDiscount extends HttpServlet {
     /**
      * change set discount for order with id;
      * @param req should contain parameters discount and id (orderId)
-     * @param resp send error if bad req params; send redirect to  if set discount
+     * @param resp send error if bad req params; send redirect to ShowUserOrders if set discount
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

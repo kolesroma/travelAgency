@@ -45,7 +45,9 @@ public class UserDaoFactory implements UserDao {
                         rs.getInt("age"),
                         rs.getString("address"),
                         rs.getString("role"),
-                        rs.getBoolean("isBanned"));
+                        rs.getBoolean("isBanned"),
+                        rs.getInt("stepDiscount"),
+                        rs.getInt("maxDiscount"));
             }
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
@@ -71,7 +73,9 @@ public class UserDaoFactory implements UserDao {
                         rs.getInt("age"),
                         rs.getString("address"),
                         rs.getString("role"),
-                        rs.getBoolean("isBanned"));
+                        rs.getBoolean("isBanned"),
+                        rs.getInt("stepDiscount"),
+                        rs.getInt("maxDiscount"));
             }
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
@@ -96,7 +100,9 @@ public class UserDaoFactory implements UserDao {
                         rs.getInt("age"),
                         rs.getString("address"),
                         rs.getString("role"),
-                        rs.getBoolean("isBanned")));
+                        rs.getBoolean("isBanned"),
+                        rs.getInt("stepDiscount"),
+                        rs.getInt("maxDiscount")));
             }
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
@@ -131,7 +137,7 @@ public class UserDaoFactory implements UserDao {
 
     @Override
     public void add(User user) throws DaoException {
-        final String SQL = "insert into travelAgency.users values (default, ?, ?, ?, ?, ?, ?, default, default)";
+        final String SQL = "insert into travelAgency.users values (default, ?, ?, ?, ?, ?, ?, default, default, default, default)";
         try (Connection con = DriverManager.getConnection(URL);
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, user.getLogin());
@@ -144,6 +150,22 @@ public class UserDaoFactory implements UserDao {
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot add user", e);
+        }
+    }
+
+    @Override
+    public void setDiscountStepMax(int userId, int step, int max) throws DaoException {
+        final String SQL = "update travelAgency.users set stepDiscount = ?, maxDiscount = ? where id = ?";
+        try (Connection con = DriverManager.getConnection(URL);
+             PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, step);
+            ps.setInt(2, max);
+            ps.setInt(3, userId);
+            int rows = ps.executeUpdate();
+            if (rows == 0) throw new DaoException("user not updated: there is no user with id " + userId);
+        } catch (SQLException e) {
+            LOGGER.error("error in database", e);
+            throw new DaoException("cannot add discount", e);
         }
     }
 

@@ -40,6 +40,7 @@
                 <input type="submit" value="set discount">
             </form>
         </c:if>
+        <br>
         <%--manager section--%>
     </c:forEach>
 </div>

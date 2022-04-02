@@ -12,11 +12,13 @@ public class User {
     private String address;
     private String role;
     private boolean isBanned;
+    private int stepDiscount;
+    private int maxDiscount;
 
     public User() {}
 
     public User(int id, String login, String passwordEnc, String name, String surname,
-                int age, String address, String role, boolean isBanned) {
+                int age, String address, String role, boolean isBanned, int stepDiscount, int maxDiscount) {
         this.id = id;
         this.login = login;
         this.passwordEnc = passwordEnc;
@@ -26,6 +28,8 @@ public class User {
         this.address = address;
         this.role = role;
         this.isBanned = isBanned;
+        this.stepDiscount = stepDiscount;
+        this.maxDiscount = maxDiscount;
     }
 
     public int getId() {
@@ -100,6 +104,22 @@ public class User {
         isBanned = banned;
     }
 
+    public int getStepDiscount() {
+        return stepDiscount;
+    }
+
+    public void setStepDiscount(int stepDiscount) {
+        this.stepDiscount = stepDiscount;
+    }
+
+    public int getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public void setMaxDiscount(int maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -111,6 +131,8 @@ public class User {
                 ", address='" + address + '\'' +
                 ", role='" + role + '\'' +
                 ", isBanned=" + isBanned +
+                ", stepDiscount=" + stepDiscount +
+                ", maxDiscount=" + maxDiscount +
                 '}';
     }
 

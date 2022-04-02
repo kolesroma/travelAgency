@@ -145,4 +145,20 @@ public class UserManager {
             return new ArrayList<>();
         }
     }
+
+    /**
+     * set discount step and max discount for user if not exist; change them if exists
+     * @param userId should be a real user login
+     * @return true if set; false if not
+     */
+    public boolean setDiscountStepMax(int userId, int step, int max) {
+        try {
+            userDao.setDiscountStepMax(userId, step, max);
+            LOGGER.debug("set discount for user#" + userId + " step:" + step + " max:" + max);
+            return true;
+        } catch (DaoException e) {
+            LOGGER.debug("cannot add discount for user#" + userId + "\n\t" + e.getMessage());
+            return false;
+        }
+    }
 }

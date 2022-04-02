@@ -15,6 +15,8 @@ public interface UserDao {
 
     void add(User user) throws DaoException;
 
+    void setDiscountStepMax(int userId, int step, int max) throws DaoException;
+
     void delete(User user) throws DaoException;
 
     void update(User user) throws DaoException;

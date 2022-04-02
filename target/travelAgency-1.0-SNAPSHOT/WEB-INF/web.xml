@@ -18,6 +18,7 @@
         <url-pattern>/ShowUserOrders</url-pattern>
         <url-pattern>/ShowTourUsers</url-pattern>
         <url-pattern>/SetOrderDiscount</url-pattern>
+        <url-pattern>/SetDiscountStepMax</url-pattern>
     </filter-mapping>
 
     <filter-mapping>

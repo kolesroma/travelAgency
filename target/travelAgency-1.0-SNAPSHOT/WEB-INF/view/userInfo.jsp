@@ -25,7 +25,15 @@ is banned: ${requestScope.user.banned}<br>
 <%--manager section--%>
 <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
     <hr>
-    <a href="ShowUserOrders?id=${requestScope.user.id}">order list</a>
+    <a href="ShowUserOrders?id=${requestScope.user.id}">order list</a> <br>
+    current discount step: ${requestScope.user.stepDiscount} <br>
+    current max step: ${requestScope.user.maxDiscount}
+    <form action="SetDiscountStepMax" method="post">
+        discount step: <input name="step" type="number" min="0" max="100" step="1">
+        max discount: <input name="max" type="number" min="0" max="100" step="1">
+        <input type="hidden" name="userId" value="${requestScope.user.id}">
+        <input type="submit" value="set step and max">
+    </form>
 </c:if>
 <%--manager section--%>
 <%--admin section--%>
