@@ -31,7 +31,7 @@ public class CreateOrder extends HttpServlet {
         if (new DataProcessor().isNullSendError(tour, resp, "there is no tour with id " + tourIdSt)) return;
 
         boolean added = new OrderManager().registerOrder(userId, tourId);
-        if (new DataProcessor().isFalseSendError(added, resp, "order already registered")) return;
+        if (new DataProcessor().isFalseSendError(added, resp, "cannot register order: already registered or group is full")) return;
 
         resp.sendRedirect("home.jsp");
     }
