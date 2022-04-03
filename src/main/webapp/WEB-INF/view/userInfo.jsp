@@ -27,7 +27,7 @@ is banned: ${requestScope.user.banned}<br>
     <hr>
     <a href="ShowUserOrders?id=${requestScope.user.id}">order list</a> <br>
     current discount step: ${requestScope.user.stepDiscount} <br>
-    current max step: ${requestScope.user.maxDiscount}
+    current max discount: ${requestScope.user.maxDiscount}
     <form action="SetDiscountStepMax" method="post">
         discount step: <input name="step" type="number" min="0" max="100" step="1">
         max discount: <input name="max" type="number" min="0" max="100" step="1">

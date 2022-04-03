@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,7 @@
             <p>hotel: ${tour.hotelStars}*</p>
             full price: ${tour.price}<br>
             discount: ${order.discount}%<br>
-            your price: ${tour.price * (100 - order.discount) / 100}<br>
+            your price: <my:calc originalPrice="${tour.price}" disount="${order.discount}" /><br>
             <a href="ShowTour?id=${order.tourId}">review tour</a>
         </div>
         <%--manager section--%>
