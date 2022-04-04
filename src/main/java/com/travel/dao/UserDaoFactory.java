@@ -32,7 +32,7 @@ public class UserDaoFactory implements UserDao {
     public User getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.users where id = ?";
         User user;
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -60,7 +60,7 @@ public class UserDaoFactory implements UserDao {
     public User getByLogin(String login) throws DaoException {
         final String SQL = "select * from travelAgency.users where login = ?";
         User user;
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, login);
             try (ResultSet rs = ps.executeQuery()) {
@@ -88,7 +88,7 @@ public class UserDaoFactory implements UserDao {
     public List<User> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.users";
         List<User> users = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
             while (rs.next()) {
@@ -116,7 +116,7 @@ public class UserDaoFactory implements UserDao {
         final String SQL = "select u.id, u.login, status from travelAgency.orders " +
                 "join travelAgency.users u on u.id = orders.userId where tourId = ?";
         List<User> users = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tourId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -138,7 +138,7 @@ public class UserDaoFactory implements UserDao {
     @Override
     public void add(User user) throws DaoException {
         final String SQL = "insert into travelAgency.users values (default, ?, ?, ?, ?, ?, ?, default, default, default, default)";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPasswordEnc());
@@ -156,7 +156,7 @@ public class UserDaoFactory implements UserDao {
     @Override
     public void setDiscountStepMax(int userId, int step, int max) throws DaoException {
         final String SQL = "update travelAgency.users set stepDiscount = ?, maxDiscount = ? where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, step);
             ps.setInt(2, max);
@@ -172,7 +172,7 @@ public class UserDaoFactory implements UserDao {
     @Override
     public void delete(User user) throws DaoException {
         final String SQL = "delete from travelAgency.users where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, user.getId());
             ps.execute();
@@ -186,7 +186,7 @@ public class UserDaoFactory implements UserDao {
     public void update(User user) throws DaoException {
         final String SQL = "update travelAgency.users set login = ?, passwordEnc = ?, name = ?, surname = ?," +
                 "age = ?, address = ?, role = ? ,isBanned = ? where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPasswordEnc());

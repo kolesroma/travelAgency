@@ -32,7 +32,7 @@ public class TourDaoFactory implements TourDao {
     public Tour getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.tours where id = ?";
         Tour tour;
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -55,7 +55,7 @@ public class TourDaoFactory implements TourDao {
     public List<Tour> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.tours";
         List<Tour> tours = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
             while (rs.next()) {
@@ -90,7 +90,7 @@ public class TourDaoFactory implements TourDao {
 
     private List<Tour> getTours(int skip, int show, String SQL) throws DaoException {
         List<Tour> tours = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, skip);
             ps.setInt(2, show);
@@ -160,7 +160,7 @@ public class TourDaoFactory implements TourDao {
     public void add(Tour tour) throws DaoException {
         final String SQL = "insert into travelAgency.tours values (default, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tour.getPrice());
             ps.setBoolean(2, tour.isHot());
@@ -189,7 +189,7 @@ public class TourDaoFactory implements TourDao {
     }
 
     private int getRows(String SQL) throws DaoException {
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
             rs.next();
@@ -207,7 +207,7 @@ public class TourDaoFactory implements TourDao {
     public void deleteIfNoOrders(int tourId) throws DaoException {
         final String SQL = "delete from travelAgency.tours where id = ? " +
                 "and not exists(select * from travelAgency.orders where tourId = ? and status != 'canceled')";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tourId);
             ps.setInt(2, tourId);
@@ -223,7 +223,7 @@ public class TourDaoFactory implements TourDao {
     public void update(Tour tour) throws DaoException {
         final String SQL = "update travelAgency.tours " +
                 "set price = ?, isHot = ?, groupSize = ?, type = ?, hotelStars = ? where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, tour.getPrice());
             ps.setBoolean(2, tour.isHot());

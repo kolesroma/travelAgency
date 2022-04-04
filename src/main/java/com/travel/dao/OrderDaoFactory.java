@@ -31,7 +31,7 @@ public class OrderDaoFactory implements OrderDao {
     public Order getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.orders where id = ?";
         Order order;
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
@@ -53,7 +53,7 @@ public class OrderDaoFactory implements OrderDao {
     public Order getByUserIdTourId(int userId, int tourId) throws DaoException {
         final String SQL = "select * from travelAgency.orders where userId = ? and tourId = ?";
         Order order;
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, userId);
             ps.setInt(2, tourId);
@@ -76,7 +76,7 @@ public class OrderDaoFactory implements OrderDao {
     public List<Order> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.orders";
         List<Order> orders = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(SQL)) {
             while (rs.next()) {
@@ -97,7 +97,7 @@ public class OrderDaoFactory implements OrderDao {
     public List<Order> getUserOrders(int userId) throws DaoException {
         final String SQL = "select * from travelAgency.orders where userId = ?";
         List<Order> orders = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -119,7 +119,7 @@ public class OrderDaoFactory implements OrderDao {
     @Override
     public void add(int userId, int tourId) throws DaoException {
         final String SQL = "insert into travelAgency.orders values (default, ?, ?, default, default)";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, userId);
             ps.setInt(2, tourId);
@@ -133,7 +133,7 @@ public class OrderDaoFactory implements OrderDao {
     @Override
     public void delete(Order order) throws DaoException {
         final String SQL = "delete from travelAgency.orders where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, order.getId());
             ps.execute();
@@ -147,7 +147,7 @@ public class OrderDaoFactory implements OrderDao {
     public void update(Order order) throws DaoException {
         final String SQL = "update travelAgency.orders " +
                 "set userId = ?, tourId = ?, status = ?, discount = ? where id = ?";
-        try (Connection con = DriverManager.getConnection(URL);
+        try (Connection con = BasicConnectionPool.getInstance().getConnection();
              PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setInt(1, order.getUserId());
             ps.setInt(2, order.getTourId());
