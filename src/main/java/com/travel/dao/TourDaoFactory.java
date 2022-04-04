@@ -1,6 +1,7 @@
 package com.travel.dao;
 
 import com.travel.dao.entity.Tour;
+import com.travel.dao.pool.BasicConnectionPool;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,14 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TourDaoFactory implements TourDao {
-    final static Logger LOGGER = Logger.getLogger(TourDaoFactory.class);
-
-    static final String URL = "jdbc:mysql://localhost:3306?" +
-            "autoReconnect=true&" +
-            "allowPublicKeyRetrieval=true&" +
-            "useSSL=false&" +
-            "user=root&" +
-            "password=password";
+    private final static Logger LOGGER = Logger.getLogger(TourDaoFactory.class);
 
     private static TourDao instance;
 
@@ -32,32 +26,60 @@ public class TourDaoFactory implements TourDao {
     public Tour getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.tours where id = ?";
         Tour tour;
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL)) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            ps = con.prepareStatement(SQL);
             ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) throw new DaoException("there is no tour with id " + id);
-                tour = new Tour(rs.getInt("id"),
-                        rs.getInt("price"),
-                        rs.getBoolean("isHot"),
-                        rs.getInt("groupSize"),
-                        rs.getString("type"),
-                        rs.getInt("hotelStars"));
-            }
+            rs = ps.executeQuery();
+            if (!rs.next()) throw new DaoException("there is no tour with id " + id);
+            tour = new Tour(rs.getInt("id"),
+                    rs.getInt("price"),
+                    rs.getBoolean("isHot"),
+                    rs.getInt("groupSize"),
+                    rs.getString("type"),
+                    rs.getInt("hotelStars"));
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot get tour", e);
+        } finally {
+            closeResources(con, ps, rs);
         }
         return tour;
+    }
+
+    private void closeResources(Connection con, Statement st, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+            if (st != null) st.close();
+            if (con != null) BasicConnectionPool.getInstance().releaseConnection(con);
+        } catch (SQLException e) {
+            throw new RuntimeException("cannot close recourses", e);
+        }
+    }
+
+    private void closeResources(Connection con, Statement st) {
+        try {
+            if (st != null) st.close();
+            if (con != null) BasicConnectionPool.getInstance().releaseConnection(con);
+        } catch (SQLException e) {
+            throw new RuntimeException("cannot close recourses", e);
+        }
     }
 
     @Override
     public List<Tour> getAll() throws DaoException {
         final String SQL = "select * from travelAgency.tours";
         List<Tour> tours = new ArrayList<>();
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(SQL)) {
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(SQL);
             while (rs.next()) {
                 tours.add(new Tour(rs.getInt("id"),
                         rs.getInt("price"),
@@ -69,6 +91,8 @@ public class TourDaoFactory implements TourDao {
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot get tours", e);
+        } finally {
+            closeResources(con, st, rs);
         }
         return tours;
     }
@@ -90,23 +114,28 @@ public class TourDaoFactory implements TourDao {
 
     private List<Tour> getTours(int skip, int show, String SQL) throws DaoException {
         List<Tour> tours = new ArrayList<>();
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL)) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            ps = con.prepareStatement(SQL);
             ps.setInt(1, skip);
             ps.setInt(2, show);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    tours.add(new Tour(rs.getInt("id"),
-                            rs.getInt("price"),
-                            rs.getBoolean("isHot"),
-                            rs.getInt("groupSize"),
-                            rs.getString("type"),
-                            rs.getInt("hotelStars")));
-                }
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tours.add(new Tour(rs.getInt("id"),
+                        rs.getInt("price"),
+                        rs.getBoolean("isHot"),
+                        rs.getInt("groupSize"),
+                        rs.getString("type"),
+                        rs.getInt("hotelStars")));
             }
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot get tours", e);
+        } finally {
+            closeResources(con, ps, rs);
         }
         return tours;
     }
@@ -159,9 +188,11 @@ public class TourDaoFactory implements TourDao {
     @Override
     public void add(Tour tour) throws DaoException {
         final String SQL = "insert into travelAgency.tours values (default, ?, ?, ?, ?, ?)";
-
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL)) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            ps = con.prepareStatement(SQL);
             ps.setInt(1, tour.getPrice());
             ps.setBoolean(2, tour.isHot());
             ps.setInt(3, tour.getGroupSize());
@@ -171,6 +202,8 @@ public class TourDaoFactory implements TourDao {
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot add tour", e);
+        } finally {
+            closeResources(con, ps);
         }
     }
 
@@ -189,14 +222,20 @@ public class TourDaoFactory implements TourDao {
     }
 
     private int getRows(String SQL) throws DaoException {
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(SQL)) {
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(SQL);
             rs.next();
             return rs.getInt(1);
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot count rows", e);
+        } finally {
+            closeResources(con, st, rs);
         }
     }
 
@@ -207,8 +246,11 @@ public class TourDaoFactory implements TourDao {
     public void deleteIfNoOrders(int tourId) throws DaoException {
         final String SQL = "delete from travelAgency.tours where id = ? " +
                 "and not exists(select * from travelAgency.orders where tourId = ? and status != 'canceled')";
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL)) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            ps = con.prepareStatement(SQL);
             ps.setInt(1, tourId);
             ps.setInt(2, tourId);
             int rows = ps.executeUpdate();
@@ -216,6 +258,8 @@ public class TourDaoFactory implements TourDao {
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot delete tour", e);
+        } finally {
+            closeResources(con, ps);
         }
     }
 
@@ -223,8 +267,11 @@ public class TourDaoFactory implements TourDao {
     public void update(Tour tour) throws DaoException {
         final String SQL = "update travelAgency.tours " +
                 "set price = ?, isHot = ?, groupSize = ?, type = ?, hotelStars = ? where id = ?";
-        try (Connection con = BasicConnectionPool.getInstance().getConnection();
-             PreparedStatement ps = con.prepareStatement(SQL)) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = BasicConnectionPool.getInstance().getConnection();
+            ps = con.prepareStatement(SQL);
             ps.setInt(1, tour.getPrice());
             ps.setBoolean(2, tour.isHot());
             ps.setInt(3, tour.getGroupSize());
@@ -236,6 +283,8 @@ public class TourDaoFactory implements TourDao {
         } catch (SQLException e) {
             LOGGER.error("error in database", e);
             throw new DaoException("cannot update tour", e);
+        } finally {
+            closeResources(con, ps);
         }
     }
 }

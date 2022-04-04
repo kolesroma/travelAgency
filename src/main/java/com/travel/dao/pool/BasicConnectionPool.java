@@ -1,4 +1,4 @@
-package com.travel.dao;
+package com.travel.dao.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasicConnectionPool implements ConnectionPool {
-    private static final String url = "jdbc:mysql://localhost:3306";
-    private static final String user = "root";
-    private static final String password = "password";
+    private static final String URL = "jdbc:mysql://localhost:3306?" +
+            "autoReconnect=true&" +
+            "allowPublicKeyRetrieval=true&" +
+            "useSSL=false&" +
+            "user=root&" +
+            "password=password";
 
     private static final int INITIAL_POOL_SIZE = 10;
     private static final int MAX_POOL_SIZE = 100;
@@ -46,7 +49,7 @@ public class BasicConnectionPool implements ConnectionPool {
 
         Connection connection = availableConnections.remove(availableConnections.size() - 1);
 
-        if(!connection.isValid(MAX_SECONDS_TIMEOUT)){
+        if (!connection.isValid(MAX_SECONDS_TIMEOUT)) {
             connection = createConnection();
         }
 
@@ -68,7 +71,7 @@ public class BasicConnectionPool implements ConnectionPool {
 
     private static Connection createConnection() {
         try {
-            return DriverManager.getConnection(url, user, password);
+            return DriverManager.getConnection(URL);
         } catch (SQLException e) {
             throw new RuntimeException("cannot get connection:", e);
         }
@@ -80,16 +83,6 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public String getUrl() {
-        return url;
-    }
-
-    @Override
-    public String getUser() {
-        return user;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
+        return URL;
     }
 }
