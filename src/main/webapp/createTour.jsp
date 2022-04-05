@@ -14,18 +14,35 @@
 <body>
 <%@include file="WEB-INF/view/sidebar.jspf" %>
 <%--admin section--%>
-<form action="CreateTour" method="post">
-    price: <input type="number" min="100" step="100" name="price"><br>
-    is hot: <input type="checkbox" name="isHot"><br>
-    group size: <input type="number" min="1" step="1" name="groupSize"><br>
-    type: <select name="type" id="types">
-    <option value="excursion">excursion</option>
-    <option value="shopping">shopping</option>
-    <option value="vacation">vacation</option>
-</select>
-    hotel stars: <input type="number" min="1" max="5" step="1" name="hotelStars"><br>
-    <input type="submit" value="CREATE">
+<div class="all-space">
+<form action="CreateTour" method="post" class="create-tour-wrapper">
+    <label>
+        <span>Price</span>
+        <input class="input_number span-margin" type="number" min="100" step="100" name="price" placeholder="1000" required>
+    </label>
+    <label>
+        <span>Type</span> <br>
+        <select name="type" id="types"class="span-margin">
+            <option value="excursion">excursion</option>
+            <option value="shopping">shopping</option>
+            <option value="vacation">vacation</option>
+        </select>
+    </label>
+    <label>
+        Is hot
+        <input type="checkbox" name="isHot" class="span-margin">
+    </label>
+    <label>
+        Group size
+        <input class="input_number span-margin" type="number" min="1" step="1" name="groupSize" placeholder="10" required>
+    </label>
+    <label>
+        Hotel stars
+        <input class="input_number span-margin" type="number" min="1" max="5" step="1" name="hotelStars" placeholder="3" required>
+    </label>
+    <input class="btn" type="submit" value="CREATE">
 </form>
+</div>
 <%--admin section--%>
 </body>
 </html>
