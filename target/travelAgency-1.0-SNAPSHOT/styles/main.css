@@ -1,4 +1,4 @@
-.tour{
+.tour {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,9 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+h1 {
     color: #2F80ED;
     font-weight: bold;
 }
@@ -63,6 +66,7 @@ html {
 body {
     font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
     height: 100%;
+    color: #23232e;
 }
 
 .input_number {
@@ -110,3 +114,59 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.content {
+    margin: 0 300px;
+}
+
+#h1-all-users {
+    margin-bottom: 10px;
+}
+
+.users-container {
+    margin-top: 40px;
+    width: 200px;
+    float: right;
+}
+
+.users {
+    display: flex;
+    flex-direction: column;
+}
+
+.users a {
+    padding-bottom: 4px;
+    text-decoration: none;
+    background-image: linear-gradient(
+            to left,
+            #23232e,
+            #23232e
+    );
+    display: inline-block;
+    position: relative;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.users a:before {
+    content: '';
+    background: #54b3d6;
+    display: block;
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+.users a:hover {
+    background-position: 0;
+}
+
+.users a:hover::before {
+    width: 100%;
+}
+
+
