@@ -11,15 +11,16 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="WEB-INF/view/sidebar.jspf"%>
-
-id: ${sessionScope.loggedUser.id}<br>
-login: ${sessionScope.loggedUser.login}<br>
-name: ${sessionScope.loggedUser.name}<br>
-surname: ${sessionScope.loggedUser.surname}<br>
-age: ${sessionScope.loggedUser.age}<br>
-address: ${sessionScope.loggedUser.address}<br>
-role: ${sessionScope.loggedUser.role}<br>
-
+<%@include file="WEB-INF/view/sidebar.jspf" %>
+<div class="table-block">
+    <span id="user-icon"><ion-icon name="person-circle-outline"></ion-icon></span>
+    <p>id: ${sessionScope.loggedUser.id}</p>
+    <p>login: ${sessionScope.loggedUser.login}</p>
+    <p>name: ${sessionScope.loggedUser.name}</p>
+    <p>surname: ${sessionScope.loggedUser.surname}</p>
+    <p>age: ${sessionScope.loggedUser.age}</p>
+    <p>address: ${sessionScope.loggedUser.address}</p>
+    <p>role: ${sessionScope.loggedUser.role}</p>
+</div>
 </body>
 </html>

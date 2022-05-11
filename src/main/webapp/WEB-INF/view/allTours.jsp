@@ -12,64 +12,68 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-<%@include file="sidebar.jspf"%>
+<%@include file="sidebar.jspf" %>
 <form class="choose" action="ShowFound">
     <div class="type">
-        TOUR<br>
+        <h2>TOUR</h2>
         <label><input type="checkbox" name="vacation">vacation</label> <br>
         <label><input type="checkbox" name="excursion">excursion</label> <br>
         <label><input type="checkbox" name="shopping">shopping</label> <br>
     </div>
     <div class="hotel">
-        Hotel<br>
-        <label><input type="checkbox" name="star1">*</label> <br>
-        <label><input type="checkbox" name="star2">**</label> <br>
-        <label><input type="checkbox" name="star3">***</label> <br>
-        <label><input type="checkbox" name="star4">****</label> <br>
-        <label><input type="checkbox" name="star5">*****</label> <br>
+        <h2>Hotel</h2>
+        <label><input type="checkbox" name="star1">⭐</label> <br>
+        <label><input type="checkbox" name="star2">⭐⭐</label> <br>
+        <label><input type="checkbox" name="star3">⭐⭐⭐</label> <br>
+        <label><input type="checkbox" name="star4">⭐⭐⭐⭐</label> <br>
+        <label><input type="checkbox" name="star5">⭐⭐⭐⭐⭐</label> <br>
     </div>
     <div class="price">
-        price<br>
+        <h2>Price</h2>
         <input type="number" min="0" step="100" name="priceFrom"> -
         <input type="number" min="0" step="100" name="priceTo">
     </div>
     <div class="group-size">
-        group <br>
+        <h2>Group</h2>
         <input type="number" min="0" step="1" name="groupFrom"> -
         <input type="number" min="0" step="1" name="groupTo">
     </div>
     <div>
         <input type="hidden" name="page" value="1">
-        <input type="submit" value="FIND">
+        <input class="btn" type="submit" value="FIND">
     </div>
 </form>
 <div class="tour-container">
     <c:forEach var="tour" items="${requestScope.tours}">
-        <a href="ShowTour?id=${tour.id}">
-            <div class="tour">
-                <c:if test="${tour.hot}">
-                    <span class="fire-span"><ion-icon class="fire" name="flame"></ion-icon></span>
-                </c:if>
-                <img src="img/hotel.jpg" alt="hotel">
-                <p>TOUR #${tour.id}</p>
-                <p>price: ${tour.price}</p>
-                <p>type: ${tour.type}</p>
-                <p>size group: ${tour.groupSize}</p>
-                <p>hotel: ${tour.hotelStars}*</p>
-            </div>
-        </a>
+        <div class="tour">
+            <c:if test="${tour.hot}">
+                <span class="fire-span"><ion-icon class="fire" name="flame"></ion-icon></span>
+            </c:if>
+            <img src="img/hotel.jpg" alt="hotel">
+            <p>TOUR #${tour.id}</p>
+            <p>price: ${tour.price}</p>
+            <p>type: ${tour.type}</p>
+            <p>size group: ${tour.groupSize}</p>
+            <p>hotel: ${tour.hotelStars}⭐</p>
+            <form action="ShowTour">
+                <input type="hidden" value="${tour.id}" name="id">
+                <input type="submit" value="WATCH TOUR" onclick="">
+            </form>
+        </div>
     </c:forEach>
 </div>
-<a id="prev" class="prev" href="${requestScope.path}page=${requestScope.page-1}">previous</a> ~~
-<a id="next" href="${requestScope.path}page=${requestScope.page+1}">next</a>
-page: ${requestScope.page}
+<div class="page-tab">
+    <a id="prev" class="prev" href="${requestScope.path}page=${requestScope.page-1}"> < prev < </a>
+    page: ${requestScope.page}
+    <a id="next" href="${requestScope.path}page=${requestScope.page+1}"> > next > </a>
+</div>
 </body>
-
 <script>
     function get(name) {
         if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
             return decodeURIComponent(name[1]);
     }
+
     let name = get("page");
     if (name <= 1) {
         const prev = document.getElementById("prev");

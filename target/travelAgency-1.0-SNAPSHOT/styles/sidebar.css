@@ -23,7 +23,7 @@ nav a div:hover {
     background-color: #d34b4b;
 }
 
-ion-icon {
+.wrapper-nav-items ion-icon {
     color: white;
     font-size: 36px;
 }

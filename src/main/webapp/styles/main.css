@@ -2,6 +2,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    text-align: center;
+    padding: 28px 28px 10px 28px;
+    background-color: #f1eeee;
+    border-radius: 8px;
+}
+
+.tour:hover {
+    background-color: #ded2d2;
 }
 
 .tour-container {
@@ -9,6 +17,28 @@
     flex-direction: row;
     justify-content: center;
     gap: 40px;
+    color: #23232e;
+    text-decoration: none;
+    margin: 40px 0;
+}
+
+.tour p {
+    margin: 6px 0;
+}
+
+.tour input[type=submit] {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    padding: 12px 28px;
+    background: #6fcf97;
+    border-radius: 24px;
+    border: none;
+    display: block;
+    cursor: pointer;
+    width: 200px;
+    margin: 10px auto;
 }
 
 .fire {
@@ -22,14 +52,38 @@
     right: -22px;
 }
 
+.ban {
+    color: #fe5151;
+    font-size: 36px;
+}
+
+.tip {
+    color: #6fcf97;
+    font-size: 36px;
+}
+
 img {
     max-width: 300px;
 }
 
 .choose {
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 40px;
+}
+
+.choose h2 {
+    margin-bottom: 4px;
+}
+
+.page-tab {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: #23232e;
+    text-decoration: none;
     gap: 40px;
 }
 
@@ -169,4 +223,72 @@ body {
     width: 100%;
 }
 
+.participants-users-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
 
+}
+
+.participants-users-container h2 {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.float-admin {
+    width: 200px;
+    margin: 0 40px 0 auto;
+}
+
+.table-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: #23232e;
+    text-decoration: none;
+    margin: 40px auto;
+    background-color: #f1eeee;
+    border-radius: 8px;
+    width: 300px;
+    padding: 30px 0;
+}
+
+#user-icon {
+    color: #23232e;
+    font-size: 108px;
+}
+
+
+.status-discount-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-set {
+    width: min-content;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.discount-container {
+    width: 200px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tour-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.tour-button span {
+    color: #23232e;
+    font-size: 54px;
+}

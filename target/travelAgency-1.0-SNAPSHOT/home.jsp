@@ -14,6 +14,12 @@
 <body>
 <%@include file="WEB-INF/view/sidebar.jspf" %>
 <section class="content">
+    <div class="tour-button float-admin">
+        <span><ion-icon class name="newspaper-outline"></ion-icon></span>
+        <form action="createTour.jsp">
+            <input class="btn" type="submit" value="Create tour">
+        </form>
+    </div>
     <%--manager section--%>
     <c:if test="${sessionScope.loggedUser.role == 'manager' || sessionScope.loggedUser.role == 'admin'}">
         <div class="users-container">

@@ -22,7 +22,7 @@
     </label>
     <label>
         <span>Type</span> <br>
-        <select name="type" id="types"class="span-margin">
+        <select name="type" id="types" class="span-margin">
             <option value="excursion">excursion</option>
             <option value="shopping">shopping</option>
             <option value="vacation">vacation</option>

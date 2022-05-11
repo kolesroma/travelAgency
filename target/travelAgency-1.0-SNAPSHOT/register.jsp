@@ -6,12 +6,14 @@
     <title>Register</title>
 </head>
 <style>
-
-    html, body {
-        height: 100%;
+    html,
+    input{
+        font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+        font-size: 18px;
     }
 
     .register-wrapper {
+        margin-top: 340px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -25,6 +27,18 @@
 
     }
 
+    .btn {
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 20px;
+        color: #FFFFFF;
+        padding: 12px 28px;
+        background: #2F80ED;
+        border-radius: 24px;
+        border: none;
+        display: block;
+        cursor: pointer;
+    }
 
 </style>
 <body>
@@ -52,9 +66,9 @@
         </label>
         <label>
             <span>password</span>
-            <input type="password" name="password" required minlength="5" placeholder="********">
+            <input type="password" name="password" required minlength="5" placeholder="password">
         </label>
-        <input class="btn" type="submit" value="register">
+        <input class="btn" type="submit" value="REGISTER">
     </form>
 </div>
 </body>
