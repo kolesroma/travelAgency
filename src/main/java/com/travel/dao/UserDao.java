@@ -1,10 +1,13 @@
 package com.travel.dao;
 
 import com.travel.dao.entity.User;
+import com.travel.dao.pool.ConnectionPool;
 
 import java.util.List;
 
 public interface UserDao {
+    void setConnectionPool(ConnectionPool connectionPool);
+
     User getById(int id) throws DaoException;
 
     User getByLogin(String login) throws DaoException;

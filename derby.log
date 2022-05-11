@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Apr 07 15:57:51 EEST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0180-041a-40ac-000002f28a00 
+on database directory memory:/home/roman/IdeaProjects/travelAgency/TRAVELAGENCY with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@251a69d7 
+Loaded from file:/home/roman/.m2/repository/org/apache/derby/derby/10.15.2.0/derby-10.15.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16+36-2231
+user.dir=/home/roman/IdeaProjects/travelAgency
+os.name=Linux
+os.arch=amd64
+os.version=5.4.0-70-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

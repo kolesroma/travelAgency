@@ -2,6 +2,7 @@ package com.travel.dao;
 
 import com.travel.dao.entity.User;
 import com.travel.dao.pool.BasicConnectionPool;
+import com.travel.dao.pool.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -12,6 +13,7 @@ public class UserDaoFactory implements UserDao {
     private final static Logger LOGGER = Logger.getLogger(UserDaoFactory.class);
 
     private static UserDao instance;
+    private ConnectionPool connectionPool = BasicConnectionPool.getInstance();
 
     private UserDaoFactory() {
     }
@@ -22,6 +24,11 @@ public class UserDaoFactory implements UserDao {
     }
 
     @Override
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
+    @Override
     public User getById(int id) throws DaoException {
         final String SQL = "select * from travelAgency.users where id = ?";
         User user;
@@ -29,7 +36,7 @@ public class UserDaoFactory implements UserDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -58,7 +65,7 @@ public class UserDaoFactory implements UserDao {
         try {
             if (rs != null) rs.close();
             if (st != null) st.close();
-            if (con != null) BasicConnectionPool.getInstance().releaseConnection(con);
+            if (con != null) connectionPool.releaseConnection(con);
         } catch (SQLException e) {
             throw new RuntimeException("cannot close recourses", e);
         }
@@ -67,7 +74,7 @@ public class UserDaoFactory implements UserDao {
     private void closeResources(Connection con, Statement st) {
         try {
             if (st != null) st.close();
-            if (con != null) BasicConnectionPool.getInstance().releaseConnection(con);
+            if (con != null) connectionPool.releaseConnection(con);
         } catch (SQLException e) {
             throw new RuntimeException("cannot close recourses", e);
         }
@@ -81,7 +88,7 @@ public class UserDaoFactory implements UserDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setString(1, login);
             rs = ps.executeQuery();
@@ -114,7 +121,7 @@ public class UserDaoFactory implements UserDao {
         Statement st = null;
         ResultSet rs = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
@@ -148,7 +155,7 @@ public class UserDaoFactory implements UserDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setInt(1, tourId);
             rs = ps.executeQuery();
@@ -174,7 +181,7 @@ public class UserDaoFactory implements UserDao {
         Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPasswordEnc());
@@ -197,7 +204,7 @@ public class UserDaoFactory implements UserDao {
         Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setInt(1, step);
             ps.setInt(2, max);
@@ -218,7 +225,7 @@ public class UserDaoFactory implements UserDao {
         Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setInt(1, user.getId());
             ps.execute();
@@ -237,7 +244,7 @@ public class UserDaoFactory implements UserDao {
         Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = BasicConnectionPool.getInstance().getConnection();
+            con = connectionPool.getConnection();
             ps = con.prepareStatement(SQL);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPasswordEnc());
